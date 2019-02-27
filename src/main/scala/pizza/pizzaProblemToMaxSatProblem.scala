@@ -17,11 +17,16 @@ object pizzaProblemToMaxSatProblem {
 
   def apply(pp: PizzaProblem): MaxSatProblem[PizzaAtom] = {
     implicit val data = PizzaProblemData(pp, allSlices(pp))
+    System.out.println("Computing formulas")
     val problemFormulas = data.allSlices.map(sliceChosenDefinition) :+ isValid
     val sliceClauses: Set[Clause[PizzaAtom]] = data.allSlices.map(slice =>
       PizzaClause(Set(), Set(SliceChosenAtom(slice)))).toSet
+    System.out.println("Computed formulas")
 
-    MaxSatProblem(problemFormulas.flatMap(f => toClauses(f)).toSet, sliceClauses)
+    System.out.println("Computing clause form")
+    val hardClauses = problemFormulas.flatMap(f => toClauses(f)).toSet
+    System.out.println("Computed clause form")
+    MaxSatProblem(hardClauses, sliceClauses)
   }
 
   private def sliceChosenDefinition(slice: Slice): Formula[PizzaAtom] = {
@@ -66,7 +71,8 @@ object pizzaProblemToMaxSatProblem {
 
 
   private[pizza] def allSlices(pp: PizzaProblem): Seq[Slice] = {
-    (0 to pp.C).flatMap(i => {
+    System.out.println("Computing all slices")
+    val ret = (0 to pp.C).flatMap(i => {
       (0 to pp.R).flatMap(j => {
         (1 to pp.H).flatMap(l => {
           (ceilDivision(pp.L, l) to floorDivision(pp.H, l)).flatMap(w => {
@@ -78,6 +84,8 @@ object pizzaProblemToMaxSatProblem {
         })
       })
     })
+    System.out.println(s"Computed all ${ret.size} slices")
+    ret
   }
 
   private[pizza] def cells(slice: Slice): Seq[Cell] = {

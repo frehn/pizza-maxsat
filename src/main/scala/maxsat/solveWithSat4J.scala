@@ -20,10 +20,7 @@ object solveWithSat4J {
 
     val solverProblem = reader.parseInstance(new FileInputStream(file))
     Option(solverProblem.findModel()) match {
-      case None => {
-        System.out.println("No model found")
-        None
-      }
+      case None => None
       case Some(model) => {
         val myModel: Map[Atom[T], Boolean] = variableMap.map { case (atom, i) => {
           if (model.contains(i))
