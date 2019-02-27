@@ -7,14 +7,27 @@ class pizzaProblemToMaxSatProblemTest extends FlatSpec with Matchers {
     val problem = PizzaProblem(R = 2, C = 3, L = 3, H = 4, (_, _) => Tomato())
 
     val expectedSlices = Set(
-      Slice(Cell(1, 1), 1, 3),
-      Slice(Cell(1, 2), 1, 3),
-      Slice(Cell(1, 1), 2, 2),
-      Slice(Cell(2, 1), 2, 2)
+      Slice(Cell(0, 0), 3, 1),
+      Slice(Cell(0, 1), 3, 1),
+      Slice(Cell(0, 0), 2, 2),
+      Slice(Cell(1, 0), 2, 2)
     )
 
     pizzaProblemToMaxSatProblem.allSlices(problem).toSet should equal(expectedSlices)
   }
+
+  "allSlices" should "compute correct slices for the example problem" in {
+    val problem = testProblem
+    val slices = pizzaProblemToMaxSatProblem.allSlices(problem).toSet
+
+    System.out.println("SLICES")
+    System.out.println(slices)
+
+    slices should contain(Slice(Cell(1, 1), 1, 1))
+    slices should not contain(Slice(Cell(2,3),1,4))
+
+  }
+
 
   "cells" should "compute the cells of a slice" in {
     val rows = 3

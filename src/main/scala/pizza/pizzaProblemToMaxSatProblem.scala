@@ -3,12 +3,47 @@ package pizza
 import maxsat._
 
 object pizzaProblemToMaxSatProblem {
+
+  private def PizzaClause(negative: Set[Atom[PizzaAtom]], positive: Set[Atom[PizzaAtom]]): Clause[PizzaAtom] =
+    Clause(negative, positive)
+
+  private def SliceChosenAtom(slice: Slice): Atom[PizzaAtom] = Atom(SliceChosen(slice))
+
+  private def TomatoAtom(cell: Cell): Atom[PizzaAtom] = Atom(TomatoAt(cell.x, cell.y))
+
+  private def MushroomAtom(cell: Cell): Atom[PizzaAtom] = Atom(MushroomAt(cell.x, cell.y))
+
+  private def CellBelongsAtom(cell: Cell): Atom[PizzaAtom] = Atom(CellBelongs(cell.x, cell.y))
+
   def apply(pp: PizzaProblem): MaxSatProblem[PizzaAtom] = {
     implicit val data = PizzaProblemData(pp, allSlices(pp))
     val problemFormulas = data.allSlices.map(sliceChosenDefinition) :+ isValid
-    val sliceClauses: Set[Clause[PizzaAtom]] = data.allSlices.map(slice => Clause[PizzaAtom](Set[Atom[PizzaAtom]](), Set(Atom[PizzaAtom](SliceChosen(slice))))).toSet
+    val sliceClauses: Set[Clause[PizzaAtom]] = data.allSlices.map(slice =>
+      PizzaClause(Set(), Set(SliceChosenAtom(slice)))).toSet
 
     MaxSatProblem(problemFormulas.flatMap(f => toClauses(f)).toSet, sliceClauses)
+  }
+
+  private def sliceChosenDefinition(slice: Slice): Formula[PizzaAtom] = {
+    Eq(SliceChosenAtom(slice), And(cells(slice).map(cell => CellBelongsAtom(cell))))
+  }
+
+  private def isValid(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
+    And(Seq(
+      And(data.allSlices.map(slice => Imp(Atom(SliceChosen(slice)), validSlice(slice)))),
+      And((0 until data.allSlices.length).flatMap(i => {
+        (i + 1 until data.allSlices.length).flatMap(j => {
+          val slice1 = data.allSlices.apply(i)
+          val slice2 = data.allSlices.apply(j)
+          // TODO: optimization? compute overlapping slices for slice1
+          if (doSlicesOverlap(slice1, slice2)) {
+            Seq(Or[PizzaAtom](Seq(Not(SliceChosenAtom(slice1)), Not(SliceChosenAtom(slice2)))))
+          } else
+            Seq()
+        })
+      }
+      ))
+    ))
   }
 
   private def validSlice(slice: Slice)(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
@@ -18,8 +53,8 @@ object pizzaProblemToMaxSatProblem {
   private def validIngredient(slice: Slice, ingredient: Ingredient)(implicit pp: PizzaProblemData): Formula[PizzaAtom] = {
     Or(differentCellTuples(slice).toSeq.map(cells =>
       And(cells.toSeq.map(cell => ingredient match {
-        case Tomato() => Atom[PizzaAtom](TomatoAt(cell.x, cell.y))
-        case Mushroom() => Atom[PizzaAtom](MushroomAt(cell.x, cell.y))
+        case Tomato() => TomatoAtom(cell)
+        case Mushroom() => MushroomAtom(cell)
       }))
     ))
   }
@@ -29,47 +64,14 @@ object pizzaProblemToMaxSatProblem {
     differentTuples.apply(cells(slice).toSet, data.pp.L)
   }
 
-  private def isValid(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
-    And(Seq(
-      And(data.allSlices.map(slice => Imp(Atom(SliceChosen(slice)), validSlice(slice)))),
-      And[PizzaAtom]((0 until data.allSlices.length).flatMap(i => {
-        (i + 1 until data.allSlices.length).flatMap(j => {
-          val slice1 = data.allSlices.apply(i)
-          val slice2 = data.allSlices.apply(j)
-          // TODO: optimization? compute overlapping slices for slice1
-          if (overlapping(slice1, slice2)) {
-            Seq(Or[PizzaAtom](Seq(Not(Atom(SliceChosen(slice1))), Not(Atom(SliceChosen(slice2))))))
-          } else
-            Seq()
-        })
-      }
-      ))
-    ))
-  }
-
-  private def sliceChosenDefinition(slice: Slice): Formula[PizzaAtom] = {
-    Eq(Atom(SliceChosen(slice)), And(cells(slice).map(cell => Atom[PizzaAtom](CellBelongs(cell.x, cell.y)))))
-  }
-
-  private def overlapping(slice1: Slice, slice2: Slice): Boolean = {
-    def check(x1: Int, x2: Int, length1: Int, length2: Int): Boolean =
-      if (x1 <= x2) {
-        x1 + length1 <= x2
-      } else {
-        x2 + length2 <= x1
-      }
-
-    check(slice1.upperLeft.x, slice2.upperLeft.x, slice1.length, slice2.length) ||
-      check(slice1.upperLeft.y, slice1.upperLeft.y, slice1.width, slice2.width)
-  }
 
   private[pizza] def allSlices(pp: PizzaProblem): Seq[Slice] = {
-    (1 to pp.R).flatMap(i => {
-      (1 to pp.C).flatMap(j => {
+    (0 to pp.C).flatMap(i => {
+      (0 to pp.R).flatMap(j => {
         (1 to pp.H).flatMap(l => {
           (ceilDivision(pp.L, l) to floorDivision(pp.H, l)).flatMap(w => {
-            if (i + l - 1 <= pp.R && j + w - 1 <= pp.C)
-              Seq(Slice(Cell(j, i), l, w))
+            if (i + l - 1 < pp.C && j + w - 1 < pp.R)
+              Seq(Slice(Cell(i, j), l, w))
             else
               Seq()
           })
