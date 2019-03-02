@@ -7,9 +7,9 @@ import pizza.parser.parsePizzaProblem
 object Main extends App {
   override def main(args: Array[String]): Unit = {
     // Example from pizza.pdf
-    //val problem = parsePizzaProblem(scala.io.Source.fromInputStream(new FileInputStream("src/main/resources/a_example.in")).mkString.split("\n"))
+    val problem = parsePizzaProblem(scala.io.Source.fromInputStream(new FileInputStream("src/main/resources/a_example.in")).mkString.split("\n"))
     //val problem = parsePizzaProblem(scala.io.Source.fromInputStream(new FileInputStream("src/main/resources/b_small.in")).mkString.split("\n"))
-    val problem = parsePizzaProblem(scala.io.Source.fromInputStream(new FileInputStream("src/main/resources/c_medium.in")).mkString.split("\n"))
+    //val problem = parsePizzaProblem(scala.io.Source.fromInputStream(new FileInputStream("src/main/resources/c_medium.in")).mkString.split("\n"))
 
     solveWithSat4J(pizzaProblemToMaxSatProblem(problem)) match {
       case Some(maxSatSolution) => {

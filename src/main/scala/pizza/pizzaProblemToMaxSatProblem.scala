@@ -18,7 +18,7 @@ object pizzaProblemToMaxSatProblem {
   def apply(pp: PizzaProblem): MaxSatProblem[PizzaAtom] = {
     implicit val data = PizzaProblemData(pp, allSlices(pp))
     System.out.println("Computing formulas")
-    val problemFormulas = data.allSlices.map(sliceChosenDefinition) :+ isValid
+    val problemFormulas = data.allSlices.map(sliceChosenDefinition) :+ isValid :+ pizzaDefinition
     val sliceClauses: Set[Clause[PizzaAtom]] = data.allSlices.map(slice =>
       PizzaClause(Set(), Set(SliceChosenAtom(slice)))).toSet
     System.out.println("Computed formulas")
@@ -51,6 +51,17 @@ object pizzaProblemToMaxSatProblem {
     ))
   }
 
+  private def pizzaDefinition(implicit data: PizzaProblemData):Formula[PizzaAtom] = {
+    And((0 until data.pp.C).flatMap(i => {
+      (0 until data.pp.R).map(j => {
+        data.pp.ingredient(i,j) match {
+          case Tomato() => TomatoAtom(Cell(i,j))
+          case Mushroom() => MushroomAtom(Cell(i,j))
+        }
+      })
+      }))
+  }
+
   private def validSlice(slice: Slice)(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
     And(Seq(validIngredient(slice, Tomato()), validIngredient(slice, Mushroom())))
   }
@@ -72,8 +83,8 @@ object pizzaProblemToMaxSatProblem {
 
   private[pizza] def allSlices(pp: PizzaProblem): Seq[Slice] = {
     System.out.println("Computing all slices")
-    val ret = (0 to pp.C).flatMap(i => {
-      (0 to pp.R).flatMap(j => {
+    val ret = (0 until pp.C).flatMap(i => {
+      (0 until pp.R).flatMap(j => {
         (1 to pp.H).flatMap(l => {
           (ceilDivision(pp.L, l) to floorDivision(pp.H, l)).flatMap(w => {
             if (i + l - 1 < pp.C && j + w - 1 < pp.R)

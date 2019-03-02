@@ -6,8 +6,8 @@ object parsePizzaProblem {
   def apply(lines: Seq[String]) = {
     val tokens = lines(0).split(" ")
 
-    val map : Map[(Int, Int), Ingredient] = lines.tail.zipWithIndex.flatMap{ case (line, i) => {
-      line.split("").zipWithIndex.map{ case (char, j) => {
+    val map : Map[(Int, Int), Ingredient] = lines.tail.zipWithIndex.flatMap{ case (line, j) => {
+      line.split("").zipWithIndex.map{ case (char, i) => {
         (i, j) -> (if (char == "T")
           Tomato()
         else
