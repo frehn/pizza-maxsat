@@ -30,7 +30,7 @@ object pizzaProblemToMaxSatProblem {
   }
 
   private def sliceChosenDefinition(slice: Slice): Formula[PizzaAtom] = {
-    Eq(SliceChosenAtom(slice), And(cells(slice).map(cell => CellBelongsAtom(cell))))
+    Imp(SliceChosenAtom(slice), And(cells(slice).map(cell => CellBelongsAtom(cell))))
   }
 
   private def isValid(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
@@ -54,9 +54,10 @@ object pizzaProblemToMaxSatProblem {
   private def pizzaDefinition(implicit data: PizzaProblemData):Formula[PizzaAtom] = {
     And((0 until data.pp.C).flatMap(i => {
       (0 until data.pp.R).map(j => {
+        val c = Cell(i,j)
         data.pp.ingredient(i,j) match {
-          case Tomato() => TomatoAtom(Cell(i,j))
-          case Mushroom() => MushroomAtom(Cell(i,j))
+          case Tomato() => And(Seq(TomatoAtom(c), Not(MushroomAtom(c))))
+          case Mushroom() => And(Seq(MushroomAtom(c), Not(TomatoAtom(c))))
         }
       })
       }))
@@ -77,7 +78,7 @@ object pizzaProblemToMaxSatProblem {
 
   // compute L-tuples of cells of the slice that are pairwise different
   private def differentCellTuples(slice: Slice)(implicit data: PizzaProblemData): Set[Set[Cell]] = {
-    differentTuples.apply(cells(slice).toSet, data.pp.L)
+    differentTuples(cells(slice).toSet, data.pp.L)
   }
 
 
