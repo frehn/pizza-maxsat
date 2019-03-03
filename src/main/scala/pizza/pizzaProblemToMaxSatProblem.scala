@@ -15,8 +15,8 @@ object pizzaProblemToMaxSatProblem {
 
   private def CellBelongsAtom(cell: Cell): Atom[PizzaAtom] = Atom(CellBelongs(cell.x, cell.y))
 
-  def apply(pp: PizzaProblem): MaxSatProblem[PizzaAtom] = {
-    implicit val data = PizzaProblemData(pp, allSlices(pp))
+  def apply(inData: PizzaProblemData): MaxSatProblem[PizzaAtom] = {
+    implicit val data = inData
     System.out.println("Computing formulas")
     val problemFormulas = data.allSlices.map(sliceChosenDefinition) :+ isValid :+ pizzaDefinition
     val sliceClauses: Set[Clause[PizzaAtom]] = data.allSlices.map(slice =>
@@ -51,16 +51,16 @@ object pizzaProblemToMaxSatProblem {
     ))
   }
 
-  private def pizzaDefinition(implicit data: PizzaProblemData):Formula[PizzaAtom] = {
-    And((0 until data.pp.C).flatMap(i => {
-      (0 until data.pp.R).map(j => {
-        val c = Cell(i,j)
-        data.pp.ingredient(i,j) match {
+  private def pizzaDefinition(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
+    And((0 until data.problem.C).flatMap(i => {
+      (0 until data.problem.R).map(j => {
+        val c = Cell(i, j)
+        data.problem.ingredient(i, j) match {
           case Tomato() => And(Seq(TomatoAtom(c), Not(MushroomAtom(c))))
           case Mushroom() => And(Seq(MushroomAtom(c), Not(TomatoAtom(c))))
         }
       })
-      }))
+    }))
   }
 
   private def validSlice(slice: Slice)(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
@@ -78,26 +78,7 @@ object pizzaProblemToMaxSatProblem {
 
   // compute L-tuples of cells of the slice that are pairwise different
   private def differentCellTuples(slice: Slice)(implicit data: PizzaProblemData): Set[Set[Cell]] = {
-    differentTuples(cells(slice).toSet, data.pp.L)
-  }
-
-
-  private[pizza] def allSlices(pp: PizzaProblem): Seq[Slice] = {
-    System.out.println("Computing all slices")
-    val ret = (0 until pp.C).flatMap(i => {
-      (0 until pp.R).flatMap(j => {
-        (1 to pp.H).flatMap(l => {
-          (ceilDivision(pp.L, l) to floorDivision(pp.H, l)).flatMap(w => {
-            if (i + l - 1 < pp.C && j + w - 1 < pp.R)
-              Seq(Slice(Cell(i, j), l, w))
-            else
-              Seq()
-          })
-        })
-      })
-    })
-    System.out.println(s"Computed all ${ret.size} slices")
-    ret
+    differentTuples(cells(slice).toSet, data.problem.L)
   }
 
   private[pizza] def cells(slice: Slice): Seq[Cell] = {
@@ -105,13 +86,7 @@ object pizzaProblemToMaxSatProblem {
       (slice.upperLeft.y to slice.upperLeft.y + slice.width - 1).map(y => Cell(x, y))
     )
   }
-
-  private def floorDivision(a: Int, b: Int): Int = a / b
-
-  private def ceilDivision(a: Int, b: Int): Int = (a - 1) / b + 1
 }
-
-case class PizzaProblemData(pp: PizzaProblem, allSlices: Seq[Slice])
 
 case class Cell(x: Int, y: Int)
 

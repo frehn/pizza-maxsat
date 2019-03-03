@@ -1,10 +1,23 @@
 package pizza
 
 import org.scalatest._
+import pizza.TestData.problem
+import util.rectangle
 
 class pizzaProblemToMaxSatProblemTest extends FlatSpec with Matchers {
   "allSlices" should "compute correct slices for a very small problem" in {
-    val problem = PizzaProblem(R = 2, C = 3, L = 3, H = 4, (_, _) => Tomato())
+    val simpleProblem = {
+      val R = 2;
+      val C = 3;
+      val L = 3;
+      val H = 4;
+
+      val ingredients = rectangle((0 until R), (0 until C)).map { case (x, y) => {
+        (x, y) -> Tomato()
+      }
+      }.toMap
+      PizzaProblem(R, C, L, H, ingredients)
+    }
 
     val expectedSlices = Set(
       Slice(Cell(0, 0), 3, 1),
@@ -13,18 +26,17 @@ class pizzaProblemToMaxSatProblemTest extends FlatSpec with Matchers {
       Slice(Cell(1, 0), 2, 2)
     )
 
-    pizzaProblemToMaxSatProblem.allSlices(problem).toSet should equal(expectedSlices)
+    pizzaProblemToData.allSlices(simpleProblem).toSet should equal(expectedSlices)
   }
 
   "allSlices" should "compute correct slices for the example problem" in {
-    val problem = testProblem
-    val slices = pizzaProblemToMaxSatProblem.allSlices(problem).toSet
+    val slices = pizzaProblemToData.allSlices(problem).toSet
 
     System.out.println("SLICES")
     System.out.println(slices)
 
     slices should contain(Slice(Cell(1, 1), 1, 1))
-    slices should not contain(Slice(Cell(2,3),1,4))
+    slices should not contain (Slice(Cell(2, 3), 1, 4))
 
   }
 
