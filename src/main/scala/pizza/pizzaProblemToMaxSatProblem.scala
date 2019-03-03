@@ -15,28 +15,35 @@ object pizzaProblemToMaxSatProblem {
 
   private def CellBelongsAtom(cell: Cell): Atom[PizzaAtom] = Atom(CellBelongs(cell.x, cell.y))
 
-  def apply(inData: PizzaProblemData): MaxSatProblem[PizzaAtom] = {
-    implicit val data = inData
+  def apply(implicit data: PizzaProblemData): MaxSatProblem[PizzaAtom] = {
     System.out.println("Computing formulas")
-    val problemFormulas = data.allSlices.map(sliceChosenDefinition) :+ isValid :+ pizzaDefinition
-    val sliceClauses: Set[Clause[PizzaAtom]] = data.allSlices.map(slice =>
-      PizzaClause(Set(), Set(SliceChosenAtom(slice)))).toSet
+    val problemFormulas = data.allSlices.map(sliceChosenDefinition) :+ isValid :+ pizzaDefinition :+ cellChosenDefinition
+    val cellClauses: Set[Clause[PizzaAtom]] = data.allCells.map(cell =>
+      PizzaClause(Set(), Set(CellBelongsAtom(cell)))).toSet
     System.out.println("Computed formulas")
 
     System.out.println("Computing clause form")
     val hardClauses = problemFormulas.flatMap(f => toClauses(f)).toSet
     System.out.println("Computed clause form")
-    MaxSatProblem(hardClauses, sliceClauses)
+    MaxSatProblem(hardClauses, cellClauses)
   }
 
   private def sliceChosenDefinition(slice: Slice): Formula[PizzaAtom] = {
     Imp(SliceChosenAtom(slice), And(cells(slice).map(cell => CellBelongsAtom(cell))))
   }
 
+  private def cellChosenDefinition(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
+    And(data.allCells.map( cell => {
+      Imp(CellBelongsAtom(cell), Or(data.allSlices.filter( slice => cellContainedIn( cell, slice ) ).map( slice =>
+        SliceChosenAtom(slice)
+      )))
+    }))
+  }
+
   private def isValid(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
     And(Seq(
       And(data.allSlices.map(slice => Imp(Atom(SliceChosen(slice)), validSlice(slice)))),
-      And((0 until data.allSlices.length).flatMap(i => {
+      And(data.allSlices.indices.flatMap(i => {
         (i + 1 until data.allSlices.length).flatMap(j => {
           val slice1 = data.allSlices.apply(i)
           val slice2 = data.allSlices.apply(j)
@@ -81,11 +88,9 @@ object pizzaProblemToMaxSatProblem {
     differentTuples(cells(slice).toSet, data.problem.L)
   }
 
-  private[pizza] def cells(slice: Slice): Seq[Cell] = {
-    (slice.upperLeft.x to slice.upperLeft.x + slice.length - 1).flatMap(x =>
-      (slice.upperLeft.y to slice.upperLeft.y + slice.width - 1).map(y => Cell(x, y))
-    )
-  }
+  private[pizza] def cells(slice: Slice): Seq[Cell] = (slice.upperLeft.x until slice.upperLeft.x + slice.length).flatMap(x =>
+    (slice.upperLeft.y until slice.upperLeft.y + slice.width).map(y => Cell(x, y))
+  )
 }
 
 case class Cell(x: Int, y: Int)

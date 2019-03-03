@@ -8,7 +8,7 @@ object toClauses {
       case Eq(left, right) => apply(And(Seq(Imp(left, right), Imp(right, left))))
       case Imp(left, right) => apply(Or(Seq(Not(left), right)))
       case Not( a @ Atom(_)) => Set(Clause(negative = Set(a), positive = Set()))
-      case Not(Not(f)) => apply(f)
+      case Not(Not(g)) => apply(g)
       case Not(Or(disjuncts)) => apply(And(disjuncts.map(Not(_))))
       case Not(And(conjuncts)) => apply(Or(conjuncts.map(Not(_))))
       case Not(Imp(left, right)) => apply(And(Seq(left, Not(right))))

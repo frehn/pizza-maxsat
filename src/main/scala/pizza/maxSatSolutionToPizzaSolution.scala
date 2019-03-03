@@ -4,7 +4,7 @@ import maxsat.MaxSatSolution
 
 object maxSatSolutionToPizzaSolution {
   def apply(solution: MaxSatSolution[PizzaAtom]): PizzaSolution = {
-    solution.model.foreach{ case (atom, tru) => {
+    /*solution.model.foreach{ case (atom, tru) => {
       val str = if (tru) "" else "Not "
       atom.id match {
         case SliceChosen(slice) => println(s"${str}slice chosen: ${slice}")
@@ -12,7 +12,7 @@ object maxSatSolutionToPizzaSolution {
         case TomatoAt(i, j) => println(s"${str}tomato at: $i, $j")
         case CellBelongs(i, j) => println(s"${str}cell belongs: $i, $j")
       }
-    }}
+    }}*/
 
     PizzaSolution(
       solution.model

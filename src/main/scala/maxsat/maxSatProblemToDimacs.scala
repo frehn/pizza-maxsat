@@ -5,7 +5,7 @@ import java.io.{OutputStream, OutputStreamWriter, PrintWriter}
 object maxSatProblemToDimacs {
   def apply[T](maxSatProblem: MaxSatProblem[T],
                out: OutputStream): Map[Atom[T], Int] = {
-    val writer = new PrintWriter((new OutputStreamWriter(out)))
+    val writer = new PrintWriter(new OutputStreamWriter(out))
     val clauseNum = maxSatProblem.clauses.size
     val top = maxSatProblem.softClauses.size + 1
 
@@ -29,7 +29,5 @@ object maxSatProblemToDimacs {
   }
 
   private[maxsat] def getVariables[T](maxSatProblem: MaxSatProblem[T]): Set[Atom[T]] =
-    maxSatProblem.clauses.flatMap(clause => {
-      (clause.positive ++ clause.negative)
-    })
+    maxSatProblem.clauses.flatMap(clause => clause.positive ++ clause.negative)
 }
