@@ -2,29 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="06ab2b64-f105-456f-bfed-1549e55653bb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/scala/pizza/PizzaProblemData.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/pizza/isSolutionValid.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/pizza/pizzaProblemToData.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/util/rectangle.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/scala/pizza/TestData.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/scala/pizza/isSolutionValidTest.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/scala/pizza/parser/parsePizzaProblemTest.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/scala/util/rectangleTest.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/scala/pizza/pizzaProblemToDataTest.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/pizza-maxsat.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/pizza-maxsat.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/a_example.in" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/a_example.in" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/b_small.in" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/b_small.in" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/c_medium.in" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/c_medium.in" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/d_big.in" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/d_big.in" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/Main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Main.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/pizza/PizzaProblem.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/pizza/PizzaProblem.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/pizza/isValid.scala" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/pizza/parser/parsePizzaProblem.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/pizza/parser/parsePizzaProblem.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/pizza/pizzaProblemToMaxSatProblem.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/pizza/pizzaProblemToMaxSatProblem.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/scala/maxsat/TestData.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/scala/maxsat/TestData.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/scala/maxsat/maxSatProblemToDimacsTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/scala/maxsat/maxSatProblemToDimacsTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/pizza/isSolutionValid.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/pizza/isSolutionValid.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/scala/maxsat/solveWithSat4JTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/scala/maxsat/solveWithSat4JTest.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/scala/pizza/package.scala" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/scala/maxsat/toClausesTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/scala/maxsat/toClausesTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/scala/pizza/TestData.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/scala/pizza/TestData.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/scala/pizza/doSlicesOverlapTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/scala/pizza/doSlicesOverlapTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/scala/pizza/isSolutionValidTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/scala/pizza/isSolutionValidTest.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/scala/pizza/parser/parsePizzaProblemTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/scala/pizza/parser/parsePizzaProblemTest.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/scala/pizza/pizzaProblemToMaxSatProblemTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/scala/pizza/pizzaProblemToMaxSatProblemTest.scala" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -73,10 +60,37 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/PizzaProblem.scala">
+        <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/isSolutionValidTest.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="93" selection-start-line="2" selection-start-column="93" selection-end-line="2" selection-end-column="93" />
+            <state relative-caret-position="102">
+              <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ivy2/cache/org.scalatest/scalatest_2.12/srcs/scalatest_2.12-3.0.5-sources.jar!/org/scalatest/tools/Framework.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="443" column="14" selection-start-line="443" selection-start-column="14" selection-end-line="443" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ivy2/cache/org.scalatest/scalatest_2.12/srcs/scalatest_2.12-3.0.5-sources.jar!/org/scalatest/FlatSpecLike.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="381" column="6" selection-start-line="381" selection-start-column="6" selection-end-line="381" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ivy2/cache/org.scalactic/scalactic_2.12/srcs/scalactic_2.12-3.0.5-sources.jar!/org/scalactic/source/Position.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" selection-start-line="1" selection-end-line="1" />
             </state>
           </provider>
         </entry>
@@ -84,47 +98,29 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/TestData.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="46" column="33" selection-start-line="46" selection-start-column="6" selection-end-line="46" selection-end-column="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/parser/parsePizzaProblemTest.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" selection-start-line="8" selection-end-line="8" />
+            <state relative-caret-position="526">
+              <caret line="51" column="11" selection-start-line="51" selection-start-column="11" selection-end-line="51" selection-end-column="11" />
               <folding>
-                <element signature="e#22#63#0" expanded="true" />
+                <element signature="e#15#45#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/scala/maxsat/TestData.scala">
+        <entry file="file://$PROJECT_DIR$/src/test/scala/util/rectangleTest.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+            <state relative-caret-position="68">
+              <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/isSolutionValidTest.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="33" selection-start-line="6" selection-start-column="33" selection-end-line="6" selection-end-column="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/pizzaProblemToMaxSatProblemTest.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="32" selection-start-line="32" selection-end-line="32" />
+            <state relative-caret-position="323">
+              <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
               <folding>
                 <element signature="e#15#37#0" expanded="true" />
               </folding>
@@ -132,23 +128,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/Main.scala">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/isSolutionValid.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="20" column="47" selection-start-line="20" selection-start-column="47" selection-end-line="20" selection-end-column="47" />
-              <folding>
-                <element signature="e#0#30#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/pizzaProblemToMaxSatProblem.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="81" column="3" selection-start-line="81" selection-start-column="3" selection-end-line="81" selection-end-column="3" />
+            <state relative-caret-position="342">
+              <caret line="35" column="65" selection-start-line="35" selection-start-column="65" selection-end-line="35" selection-end-column="65" />
             </state>
           </provider>
         </entry>
@@ -157,16 +141,19 @@
         <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/parser/parsePizzaProblem.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="153">
-              <caret line="9" column="8" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
+              <caret line="9" column="77" selection-start-line="9" selection-start-column="77" selection-end-line="9" selection-end-column="77" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/PizzaProblemData.scala">
+        <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/pizzaProblemToDataTest.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="20" lean-forward="true" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
+            <state relative-caret-position="-51">
+              <caret line="6" column="28" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
+              <folding>
+                <element signature="e#15#56#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -231,18 +218,15 @@
         <option value="$PROJECT_DIR$/src/main/scala/maxsat/toCNF.scala" />
         <option value="$PROJECT_DIR$/src/test/scala/maxsat/toCNFTest.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/maxsat/isCnf.scala" />
-        <option value="$PROJECT_DIR$/src/test/scala/maxsat/toClausesTest.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/maxsat/toClauses.scala" />
         <option value="$PROJECT_DIR$/src/test/scala/maxsat/package.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/maxsat/MaxSatProblem.scala" />
         <option value="$PROJECT_DIR$/src/test/scala/maxsat/maxSatProblemToDimacsTest.scala" />
-        <option value="$PROJECT_DIR$/src/test/scala/maxsat/solveWithSat4JTest.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/maxsat/maxSatProblemToDimacs.scala" />
         <option value="$PROJECT_DIR$/build.sbt" />
         <option value="$PROJECT_DIR$/src/main/scala/pizza/scoreSolution.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/pizza/parser/parseProblem.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/pizza/doSlicesOverlap.scala" />
-        <option value="$PROJECT_DIR$/src/test/scala/pizza/doSlicesOverlapTest.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/pizza/maxSatSolutionToPizzaSolution.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/maxsat/solveWithSat4J.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/util/rectangle.scala" />
@@ -251,17 +235,21 @@
         <option value="$PROJECT_DIR$/src/test/scala/pizza/package.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/pizza/PizzaProblem.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/pizza/parser/parsePizzaProblem.scala" />
-        <option value="$PROJECT_DIR$/src/test/scala/pizza/parser/parsePizzaProblemTest.scala" />
-        <option value="$PROJECT_DIR$/src/test/scala/maxsat/TestData.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/pizza/isSolutionValid.scala" />
-        <option value="$PROJECT_DIR$/src/test/scala/pizza/TestData.scala" />
         <option value="$PROJECT_DIR$/src/test/scala/pizza/PizzaProblemData.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/pizza/PizzaProblemData.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/pizza/pizzaProblemToData.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/pizza/pizzaProblemToMaxSatProblem.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/Main.scala" />
+        <option value="$PROJECT_DIR$/src/test/scala/maxsat/solveWithSat4JTest.scala" />
+        <option value="$PROJECT_DIR$/src/test/scala/maxsat/toClausesTest.scala" />
+        <option value="$PROJECT_DIR$/src/test/scala/pizza/TestData.scala" />
+        <option value="$PROJECT_DIR$/src/test/scala/pizza/parser/parsePizzaProblemTest.scala" />
+        <option value="$PROJECT_DIR$/src/test/scala/pizza/doSlicesOverlapTest.scala" />
         <option value="$PROJECT_DIR$/src/test/scala/pizza/isSolutionValidTest.scala" />
+        <option value="$PROJECT_DIR$/src/test/scala/maxsat/TestData.scala" />
         <option value="$PROJECT_DIR$/src/test/scala/pizza/pizzaProblemToMaxSatProblemTest.scala" />
+        <option value="$PROJECT_DIR$/src/test/scala/pizza/pizzaProblemToDataTest.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/pizza/isSolutionValid.scala" />
       </list>
     </option>
   </component>
@@ -343,15 +331,6 @@
               <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="scala" type="462c0819:PsiDirectoryNode" />
               <item name="pizza" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pizza-maxsat" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pizza-maxsat" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="scala" type="462c0819:PsiDirectoryNode" />
-              <item name="pizza" type="462c0819:PsiDirectoryNode" />
-              <item name="parser" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="pizza-maxsat" type="b2602c69:ProjectViewProjectNode" />
@@ -516,7 +495,14 @@
       <option name="project" value="LOCAL" />
       <updated>1551517361902</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Added unit tests etc">
+      <created>1551638600808</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1551638600808</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -526,7 +512,7 @@
     <frame x="-8" y="-8" width="2064" height="1128" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18862276" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19061877" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -534,11 +520,11 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3242972" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.38353413" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.38353413" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info active="true" anchor="bottom" id="sbt-shell-toolwindow" order="7" visible="true" weight="0.33433735" />
+      <window_info anchor="bottom" id="sbt-shell-toolwindow" order="7" weight="0.33433735" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32857144" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="10" />
@@ -565,7 +551,8 @@
     <MESSAGE value="Added pizzaDefinition to formula" />
     <MESSAGE value="Example data" />
     <MESSAGE value="Fixes to doSlicesOverlap. We get valid solutions now." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixes to doSlicesOverlap. We get valid solutions now." />
+    <MESSAGE value="Added unit tests etc" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added unit tests etc" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -577,10 +564,16 @@
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="scala-line">
-          <url>file://$PROJECT_DIR$/src/main/scala/pizza/parser/parsePizzaProblem.scala</url>
-          <line>9</line>
+          <url>file://$PROJECT_DIR$/src/test/scala/pizza/isSolutionValidTest.scala</url>
+          <line>6</line>
           <properties />
-          <option name="timeStamp" value="12" />
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="scala-line">
+          <url>file://$PROJECT_DIR$/src/main/scala/pizza/isSolutionValid.scala</url>
+          <line>35</line>
+          <properties />
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -595,54 +588,53 @@
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>pizza.TestData.testProblem</expression-string>
+        <expression-string>slice.width * slice.length &gt; problem.H</expression-string>
         <language-id>Scala</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>lines.tail.zipWithIndex</expression-string>
+        <expression-string>slice.width * slice.length</expression-string>
         <language-id>Scala</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>x1 + length1 &lt;= x2</expression-string>
+        <expression-string>solution.slices.exists(slice =&gt; slice.width * slice.length &gt; problem.H)</expression-string>
         <language-id>Scala</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>y2 &lt;= y1 + width1</expression-string>
+        <expression-string>data.problem.H</expression-string>
         <language-id>Scala</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>x1 + length1 &lt; x2</expression-string>
+        <expression-string>problem.H</expression-string>
         <language-id>Scala</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>y2 &lt;= y1</expression-string>
+        <expression-string>slicesExist(data, solution)</expression-string>
         <language-id>Scala</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>x1 &lt;= x2</expression-string>
+        <expression-string>slicesSmallEnough(data.problem, solution)</expression-string>
         <language-id>Scala</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>y1 &lt;= y2 &amp;&amp; y2 &lt;= y1 + width1</expression-string>
+        <expression-string>slicesSmallEnough(data.problem, solution) &amp;&amp;</expression-string>
         <language-id>Scala</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>y1 &lt;= y2 + width2</expression-string>
+        <expression-string>slicesHaveEnoughIngredients(data.problem, solution)</expression-string>
         <language-id>Scala</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/maxsat/Atom.scala" />
     <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/maxsat/MaxSatProblem.scala" />
     <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/maxsat/package.scala" />
     <entry file="file://$PROJECT_DIR$/src/main/scala/maxsat/isCnf.scala" />
@@ -667,24 +659,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/maxsat/maxSatProblemToDimacsTest.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="31" selection-start-line="4" selection-start-column="31" selection-end-line="8" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/maxsat/MaxSatSolution.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" column="57" selection-start-line="2" selection-start-column="34" selection-end-line="2" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/maxsat/toClausesTest.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
         </state>
       </provider>
     </entry>
@@ -711,13 +689,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/maxsat/solveWithSat4JTest.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="31" selection-start-line="6" selection-start-column="31" selection-end-line="6" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/PizzaAtom.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -729,16 +700,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="14" lean-forward="true" selection-start-column="14" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/maxsat/solveWithSat4J.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="31" column="37" selection-start-line="31" selection-start-column="37" selection-end-line="31" selection-end-column="37" />
-          <folding>
-            <element signature="e#16#85#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -756,31 +717,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scalactic/scalactic_2.12/srcs/scalactic_2.12-3.0.5-sources.jar!/org/scalactic/source/Position.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build.sbt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="10" column="43" lean-forward="true" selection-start-line="10" selection-start-column="43" selection-end-line="10" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scalatest/scalatest_2.12/srcs/scalatest_2.12-3.0.5-sources.jar!/org/scalatest/FlatSpecLike.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="583">
-          <caret line="1397" column="6" selection-start-line="1397" selection-start-column="6" selection-end-line="1397" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scalatest/scalatest_2.12/srcs/scalatest_2.12-3.0.5-sources.jar!/org/scalatest/tools/Framework.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="583">
-          <caret line="443" column="14" selection-start-line="443" selection-start-column="14" selection-end-line="443" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -791,20 +731,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/util/rectangleTest.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/package.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/package.scala" />
     <entry file="file://$PROJECT_DIR$/src/test/resources/a_example.in">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -829,13 +756,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/doSlicesOverlapTest.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="25" selection-start-line="4" selection-start-column="25" selection-end-line="5" selection-end-column="76" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/PizzaSolution.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -843,30 +763,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/maxsat/TestData.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/TestData.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="46" column="33" selection-start-line="46" selection-start-column="6" selection-end-line="46" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/parser/parsePizzaProblemTest.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
-          <folding>
-            <element signature="e#22#63#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/PizzaProblemData.scala" />
     <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/PizzaProblem.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -874,54 +771,150 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/PizzaProblemData.scala">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/pizzaProblemToMaxSatProblem.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="73" selection-start-line="2" selection-start-column="73" selection-end-line="2" selection-end-column="73" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/isSolutionValid.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
+        <state relative-caret-position="1377">
+          <caret line="81" column="3" selection-start-line="81" selection-start-column="3" selection-end-line="81" selection-end-column="3" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/PizzaProblemData.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
-          <caret line="2" column="20" lean-forward="true" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
+          <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/parser/parsePizzaProblem.scala">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Main.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="8" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
+        <state relative-caret-position="204">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/maxsat/solveWithSat4J.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="6" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
+          <folding>
+            <element signature="e#16#85#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/pizzaProblemToData.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/parser/parsePizzaProblemTest.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/maxsat/solveWithSat4JTest.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="1" lean-forward="true" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/maxsat/maxSatProblemToDimacsTest.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/doSlicesOverlapTest.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="49" selection-start-line="13" selection-start-column="49" selection-end-line="13" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/maxsat/TestData.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" selection-start-line="2" selection-end-line="2" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/pizzaProblemToMaxSatProblem.scala">
+    <entry file="file://$PROJECT_DIR$/src/test/scala/maxsat/toClausesTest.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="81" column="3" selection-start-line="81" selection-start-column="3" selection-end-line="81" selection-end-column="3" />
+        <state relative-caret-position="374">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/Main.scala">
+    <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/pizzaProblemToMaxSatProblemTest.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
-          <caret line="20" column="47" selection-start-line="20" selection-start-column="47" selection-end-line="20" selection-end-column="47" />
+          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
           <folding>
-            <element signature="e#0#30#0" expanded="true" />
+            <element signature="e#15#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/util/rectangleTest.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/pizzaProblemToDataTest.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-51">
+          <caret line="6" column="28" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
+          <folding>
+            <element signature="e#15#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/parser/parsePizzaProblem.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="77" selection-start-line="9" selection-start-column="77" selection-end-line="9" selection-end-column="77" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scalactic/scalactic_2.12/srcs/scalactic_2.12-3.0.5-sources.jar!/org/scalactic/source/Position.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scalatest/scalatest_2.12/srcs/scalatest_2.12-3.0.5-sources.jar!/org/scalatest/FlatSpecLike.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="381" column="6" selection-start-line="381" selection-start-column="6" selection-end-line="381" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scalatest/scalatest_2.12/srcs/scalatest_2.12-3.0.5-sources.jar!/org/scalatest/tools/Framework.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="443" column="14" selection-start-line="443" selection-start-column="14" selection-end-line="443" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/TestData.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="526">
+          <caret line="51" column="11" selection-start-line="51" selection-start-column="11" selection-end-line="51" selection-end-column="11" />
+          <folding>
+            <element signature="e#15#45#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -929,17 +922,14 @@
     <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/isSolutionValidTest.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
-          <caret line="6" column="33" selection-start-line="6" selection-start-column="33" selection-end-line="6" selection-end-column="33" />
+          <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/pizza/pizzaProblemToMaxSatProblemTest.scala">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/pizza/isSolutionValid.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="32" selection-start-line="32" selection-end-line="32" />
-          <folding>
-            <element signature="e#15#37#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="342">
+          <caret line="35" column="65" selection-start-line="35" selection-start-column="65" selection-end-line="35" selection-end-column="65" />
         </state>
       </provider>
     </entry>

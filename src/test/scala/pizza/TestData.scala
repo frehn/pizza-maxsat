@@ -1,5 +1,6 @@
 package pizza
 
+import maxsat.TestData.problem
 import util.rectangle
 
 object TestData {
@@ -47,4 +48,6 @@ object TestData {
   val noSolutionSliceDoesNotExist = PizzaSolution(Seq(
     Slice(Cell(3, 0), 1, 1)
   ))
+
+  lazy val problemData = pizzaProblemToData(problem)
 }

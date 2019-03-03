@@ -33,7 +33,7 @@ object isSolutionValid {
   }
 
   private def slicesSmallEnough(problem: PizzaProblem, solution: PizzaSolution): Boolean = {
-    solution.slices.exists(slice => slice.width * slice.length > problem.H)
+    solution.slices.forall(slice => slice.width * slice.length <= problem.H)
   }
 
   private def slicesExist(data: PizzaProblemData, solution: PizzaSolution): Boolean =

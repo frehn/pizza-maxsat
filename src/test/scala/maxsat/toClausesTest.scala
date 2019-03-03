@@ -21,7 +21,7 @@ class toClausesTest extends FlatSpec with Matchers {
     toClauses(formula) should equal(expectedClauses)
   }
 
-  "toCNF" should "convert a formula to CNF (2)" in {
+  it should "convert a formula to CNF (2)" in {
     val a = Atom[Int](1)
     val b = Atom[Int](2)
     val c = Atom[Int](3)
