@@ -17,7 +17,7 @@ object pizzaProblemToMaxSatProblem {
 
   def apply(implicit data: PizzaProblemData): MaxSatProblem[PizzaAtom] = {
     System.out.println("Computing formulas")
-    val problemFormulas = Seq(isValid, pizzaDefinition, cellChosenDefinition)
+    val problemFormulas = Seq(isValidDefinition, pizzaDefinition, cellChosenDefinition)
 
     val cellClauses: Set[Clause[PizzaAtom]] = data.allCells.map(cell =>
       PizzaClause(Set(), Set(CellBelongsAtom(cell)))).toSet
@@ -37,7 +37,7 @@ object pizzaProblemToMaxSatProblem {
     }))
   }
 
-  private def isValid(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
+  private def isValidDefinition(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
     And(Seq(
       And(data.allSlices.map(slice => Imp(Atom(SliceChosen(slice)), validSlice(slice)))),
       And(data.allSlices.indices.flatMap(i => {
@@ -53,6 +53,16 @@ object pizzaProblemToMaxSatProblem {
       }
       ))
     ))
+  }
+
+  // Compute those overlapping slices which are to the right and below of the
+  // upperLeft of this slice.
+  //
+  // The other slices will already have been considered (when looping from
+  // top-left to bottom-right through all slices.
+  private def computeOverlappingSlices(slice: Slice)(implicit data: PizzaProblemData): Seq[Slice] = {
+    (slice.upperLeft.x to slice.upperLeft.x+data.problem.H)
+
   }
 
   private def pizzaDefinition(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
