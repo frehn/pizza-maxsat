@@ -1,6 +1,7 @@
 package pizza
 
 import maxsat._
+import util.rectangle
 
 object pizzaProblemToMaxSatProblem {
 
@@ -16,53 +17,50 @@ object pizzaProblemToMaxSatProblem {
   private def CellBelongsAtom(cell: Cell): Atom[PizzaAtom] = Atom(CellBelongs(cell.x, cell.y))
 
   def apply(implicit data: PizzaProblemData): MaxSatProblem[PizzaAtom] = {
-    System.out.println("Computing formulas")
-    val problemFormulas = Seq(isValidDefinition, pizzaDefinition, cellChosenDefinition)
+    System.out.println("Computing 'Pizza' definition")
+    val pd = pizzaDefinition
+    System.out.println("Computing 'Cell chosen' definition")
+    val cc = cellChosenDefinition
+    System.out.println("Computing 'Is valid' definition")
+    val v = isValidDefinition
 
-    val cellClauses: Set[Clause[PizzaAtom]] = data.allCells.map(cell =>
-      PizzaClause(Set(), Set(CellBelongsAtom(cell)))).toSet
-    System.out.println("Computed formulas")
+    val problemFormulas = Seq(pd, cc, v)
 
     System.out.println("Computing clause form")
     val hardClauses = problemFormulas.flatMap(f => toClauses(f)).toSet
     System.out.println("Computed clause form")
+
+    System.out.println("Computing 'Cell belongs' clauses")
+    val cellClauses: Set[Clause[PizzaAtom]] = data.allCells.map(cell =>
+      PizzaClause(Set(), Set(CellBelongsAtom(cell)))).toSet
+
     MaxSatProblem(hardClauses, cellClauses)
   }
 
   private def cellChosenDefinition(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
-    And(data.allCells.map( cell => {
-      Imp(CellBelongsAtom(cell), Or(data.allSlices.filter( slice => cellContainedIn( cell, slice ) ).map( slice =>
+    And(data.allCells.map(cell => {
+      Imp(CellBelongsAtom(cell), Or(data.allSlices.filter(slice => cellContainedIn(cell, slice)).map(slice =>
         SliceChosenAtom(slice)
       )))
     }))
   }
 
-  private def isValidDefinition(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
-    And(Seq(
-      And(data.allSlices.map(slice => Imp(Atom(SliceChosen(slice)), validSlice(slice)))),
-      And(data.allSlices.indices.flatMap(i => {
-        (i + 1 until data.allSlices.length).flatMap(j => {
-          val slice1 = data.allSlices.apply(i)
-          val slice2 = data.allSlices.apply(j)
-          // TODO: optimization? compute overlapping slices for slice1
-          if (doSlicesOverlap(slice1, slice2)) {
-            Seq(Or[PizzaAtom](Seq(Not(SliceChosenAtom(slice1)), Not(SliceChosenAtom(slice2)))))
-          } else
-            Seq()
-        })
-      }
-      ))
-    ))
-  }
+  private def isValidDefinition(implicit data: PizzaProblemData): Formula[PizzaAtom] =
+    And(data.allSlices.map(slice => Imp(Atom(SliceChosen(slice)), validSlice(slice))) ++
+      data.allSlices.map(slice =>
+        Imp(SliceChosenAtom(slice),
+          And(computeOverlappingSlices(slice).map(slice2 => Not(SliceChosenAtom(slice2))))))
+    )
 
   // Compute those overlapping slices which are to the right and below of the
   // upperLeft of this slice.
   //
   // The other slices will already have been considered (when looping from
   // top-left to bottom-right through all slices.
-  private def computeOverlappingSlices(slice: Slice)(implicit data: PizzaProblemData): Seq[Slice] = {
-    (slice.upperLeft.x to slice.upperLeft.x+data.problem.H)
-
+  private[pizza] def computeOverlappingSlices(slice: Slice)(implicit data: PizzaProblemData): Seq[Slice] = {
+    rectangle(slice.upperLeft.x until slice.upperLeft.x + slice.length,
+      slice.upperLeft.y until slice.upperLeft.y + slice.width)
+      .flatMap { case (x, y) => allSlicesAt(x, y, data.problem).filterNot(_ == slice) }
   }
 
   private def pizzaDefinition(implicit data: PizzaProblemData): Formula[PizzaAtom] = {

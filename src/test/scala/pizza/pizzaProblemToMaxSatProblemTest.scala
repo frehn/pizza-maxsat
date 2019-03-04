@@ -22,6 +22,13 @@ class pizzaProblemToMaxSatProblemTest extends FlatSpec with Matchers {
 
     resultTuples should have size binomi(set.size, 3)
   }
+
+  "computeOverlappingSlices" should "compute the overlapping slices (those that are to the right and below)" in {
+    val slice = Slice(Cell(0, 1), 2, 2)
+    val overlappingSlices = pizzaProblemToMaxSatProblem.computeOverlappingSlices(slice)(TestData.problemData)
+
+    overlappingSlices should contain(Slice(Cell(1, 1), 2, 2))
+  }
 }
 
 object binomi {
