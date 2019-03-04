@@ -63,17 +63,14 @@ object pizzaProblemToMaxSatProblem {
       .flatMap { case (x, y) => allSlicesAt(x, y, data.problem).filterNot(_ == slice) }
   }
 
-  private def pizzaDefinition(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
-    And((0 until data.problem.C).flatMap(i => {
-      (0 until data.problem.R).map(j => {
-        val c = Cell(i, j)
-        data.problem.ingredient(i, j) match {
-          case Tomato() => And(Seq(TomatoAtom(c), Not(MushroomAtom(c))))
-          case Mushroom() => And(Seq(MushroomAtom(c), Not(TomatoAtom(c))))
-        }
-      })
-    }))
-  }
+  private def pizzaDefinition(implicit data: PizzaProblemData): Formula[PizzaAtom] =
+    And(rectangle(0 until data.problem.C, 0 until data.problem.R).map { case (x, y) =>
+      val c = Cell(x, y)
+      data.problem.ingredient(x, y) match {
+        case Tomato() => And(Seq(TomatoAtom(c), Not(MushroomAtom(c))))
+        case Mushroom() => And(Seq(MushroomAtom(c), Not(TomatoAtom(c))))
+      }
+    })
 
   private def validSlice(slice: Slice)(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
     And(Seq(validIngredient(slice, Tomato()), validIngredient(slice, Mushroom())))

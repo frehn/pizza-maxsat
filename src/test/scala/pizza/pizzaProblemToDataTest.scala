@@ -7,15 +7,15 @@ import util.rectangle
 class pizzaProblemToDataTest extends FlatSpec with Matchers {
   "pizzaProblemToData" should "compute correct slices for a very small problem" in {
     val simpleProblem = {
-      val R = 2;
-      val C = 3;
-      val L = 3;
-      val H = 4;
+      val R = 2
+      val C = 3
+      val L = 3
+      val H = 4
 
-      val ingredients = rectangle((0 until R), (0 until C)).map { case (x, y) => {
-        (x, y) -> Tomato()
-      }
-      }.toMap
+      val ingredients = rectangle(0 until R, 0 until C)
+        .map { case (x, y) => (x, y) -> Tomato() }
+        .toMap
+
       PizzaProblem(R, C, L, H, ingredients)
     }
 
@@ -36,7 +36,7 @@ class pizzaProblemToDataTest extends FlatSpec with Matchers {
     System.out.println(slices)
 
     slices should contain(Slice(Cell(1, 1), 1, 1))
-    slices should not contain (Slice(Cell(2, 3), 1, 4))
+    slices should not contain Slice(Cell(2, 3), 1, 4)
 
   }
 

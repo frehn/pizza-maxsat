@@ -10,7 +10,7 @@ object Main extends App {
     val data = pizzaProblemToData(problem)
 
     solveWithSat4J(pizzaProblemToMaxSatProblem(data)) match {
-      case Some(maxSatSolution) => {
+      case Some(maxSatSolution) =>
         //System.out.println(maxSatSolution)
         val solution = maxSatSolutionToPizzaSolution(maxSatSolution)
         System.out.println("Solution")
@@ -26,7 +26,6 @@ object Main extends App {
         System.out.println("Details")
         System.out.println("-------")
         System.out.println(solution.slices.map(slice => slice.toString).mkString("\n"))
-      }
       case None => System.out.println("No solution found")
     }
   }

@@ -13,7 +13,7 @@ class pizzaProblemToMaxSatProblemTest extends FlatSpec with Matchers {
 
     all(resultTuples) should have size 2
 
-    resultTuples.map(_.toSet).toSet should equal(expectedTuples)
+    resultTuples.map(_.toSet) should equal(expectedTuples)
   }
 
   "differentTuples" should "compute the n-element subsets of a bigger set" in {
@@ -33,11 +33,9 @@ class pizzaProblemToMaxSatProblemTest extends FlatSpec with Matchers {
 
 object binomi {
   def apply(n: Int, k: Int): Long = {
-    if ((n == k) || (k == 0)) {
-      return 1
-    }
-    else {
-      return binomi(n - 1, k) + binomi(n - 1, k - 1)
-    }
+    if ((n == k) || (k == 0))
+      1
+    else
+      binomi(n - 1, k) + binomi(n - 1, k - 1)
   }
 }

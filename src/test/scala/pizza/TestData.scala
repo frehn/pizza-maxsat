@@ -7,20 +7,19 @@ object TestData {
   /**
     * The example problem from pizza.pdf.
     */
-  val problem = {
-    val R = 3;
-    val C = 5;
-    val L = 1;
-    val H = 6;
+  val problem: PizzaProblem = {
+    val R = 3
+    val C = 5
+    val L = 1
+    val H = 6
 
-    val ingredients = rectangle((0 until C), (0 until R)).map { case (x, y) => {
+    val ingredients = rectangle(0 until C, 0 until R).map { case (x, y) =>
       (x, y) -> (if (y == 0 || y == 2)
         Tomato()
       else if (1 <= x && x <= 3)
         Mushroom()
       else
         Tomato())
-    }
     }.toMap
 
     PizzaProblem(R, C, L, H, ingredients)
