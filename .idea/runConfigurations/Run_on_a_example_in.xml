@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run on a_example.in" type="SbtRunConfiguration" factoryName="sbt Task">
+    <setting name="tasks" value="&quot;run src/test/resources/a_example.in&quot;" />
+    <setting name="vmparams" value="-Xms1024M -Xmx5G -Xss1M -XX:+CMSClassUnloadingEnabled -XX:-UseGCOverheadLimit" />
+    <setting name="workingDir" value="$PROJECT_DIR$" />
+    <setting name="useSbtShell" value="false" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

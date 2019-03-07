@@ -38,18 +38,28 @@ object pizzaProblemToMaxSatProblem {
   }
 
   private def cellChosenDefinition(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
-    And(data.allCells.map(cell => {
-      Imp(CellBelongsAtom(cell), Or(data.allSlices.filter(slice => cellContainedIn(cell, slice)).map(slice =>
+    And(data.allCells.par.map(cell => {
+      Imp(CellBelongsAtom(cell), Or(slicesContaining(cell).map(slice =>
         SliceChosenAtom(slice)
       )))
-    }))
+    }).seq)
+  }
+
+  private def slicesContaining(cell: Cell)(implicit data: PizzaProblemData): Seq[Slice] = {
+    rectangle(Math.max(cell.x - data.problem.maxCells - 1, 0) to cell.x, Math.max(cell.y - data.problem.maxCells - 1, 0) to cell.y).flatMap {
+      case (x, y) => {
+        val minimumLength = cell.x - x + 1
+        val minimumHeight = cell.y - y + 1
+        allSlicesAt(x, y, data.problem).filter(slice => slice.length >= minimumLength && slice.height >= minimumHeight)
+      }
+    }
   }
 
   private def isValidDefinition(implicit data: PizzaProblemData): Formula[PizzaAtom] =
-    And(data.allSlices.map(slice => Imp(Atom(SliceChosen(slice)), validSlice(slice))) ++
-      data.allSlices.map(slice =>
+    And(data.allSlices.par.map(slice => Imp(Atom(SliceChosen(slice)), validSlice(slice))).seq ++
+      data.allSlices.par.map(slice =>
         Imp(SliceChosenAtom(slice),
-          And(computeOverlappingSlices(slice).map(slice2 => Not(SliceChosenAtom(slice2))))))
+          And(computeOverlappingSlices(slice).map(slice2 => Not(SliceChosenAtom(slice2)))))).seq
     )
 
   // Compute those overlapping slices which are to the right and below of the
@@ -59,12 +69,12 @@ object pizzaProblemToMaxSatProblem {
   // top-left to bottom-right through all slices.
   private[pizza] def computeOverlappingSlices(slice: Slice)(implicit data: PizzaProblemData): Seq[Slice] = {
     rectangle(slice.upperLeft.x until slice.upperLeft.x + slice.length,
-      slice.upperLeft.y until slice.upperLeft.y + slice.width)
+      slice.upperLeft.y until slice.upperLeft.y + slice.height)
       .flatMap { case (x, y) => allSlicesAt(x, y, data.problem).filterNot(_ == slice) }
   }
 
   private def pizzaDefinition(implicit data: PizzaProblemData): Formula[PizzaAtom] =
-    And(rectangle(0 until data.problem.C, 0 until data.problem.R).map { case (x, y) =>
+    And(rectangle(0 until data.problem.columns, 0 until data.problem.row).map { case (x, y) =>
       val c = Cell(x, y)
       data.problem.ingredient(x, y) match {
         case Tomato() => And(Seq(TomatoAtom(c), Not(MushroomAtom(c))))
@@ -87,17 +97,17 @@ object pizzaProblemToMaxSatProblem {
 
   // compute L-tuples of cells of the slice that are pairwise different
   private def differentCellTuples(slice: Slice)(implicit data: PizzaProblemData): Set[Set[Cell]] = {
-    differentTuples(cells(slice).toSet, data.problem.L)
+    differentTuples(cells(slice).toSet, data.problem.minIngredients)
   }
 
   private[pizza] def cells(slice: Slice): Seq[Cell] = (slice.upperLeft.x until slice.upperLeft.x + slice.length).flatMap(x =>
-    (slice.upperLeft.y until slice.upperLeft.y + slice.width).map(y => Cell(x, y))
+    (slice.upperLeft.y until slice.upperLeft.y + slice.height).map(y => Cell(x, y))
   )
 }
 
 case class Cell(x: Int, y: Int)
 
-case class Slice(upperLeft: Cell, length: Int, width: Int)
+case class Slice(upperLeft: Cell, length: Int, height: Int)
 
 private[pizza] object differentTuples {
   /*  @tailrec

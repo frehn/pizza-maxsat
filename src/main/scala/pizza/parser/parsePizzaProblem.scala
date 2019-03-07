@@ -16,10 +16,10 @@ object parsePizzaProblem {
       }
     }.toMap
 
-    PizzaProblem(R = tokens(0).toInt,
-      C = tokens(1).toInt,
-      L = tokens(2).toInt,
-      H = tokens(3).toInt,
+    PizzaProblem(row = tokens(0).toInt,
+      columns = tokens(1).toInt,
+      minIngredients = tokens(2).toInt,
+      maxCells = tokens(3).toInt,
       map)
   }
 }

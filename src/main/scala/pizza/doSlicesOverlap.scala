@@ -8,8 +8,8 @@ object doSlicesOverlap {
     val y2 = slice2.upperLeft.y
     val length1 = slice1.length
     val length2 = slice2.length
-    val width1 = slice1.width
-    val width2 = slice2.width
+    val width1 = slice1.height
+    val width2 = slice2.height
 
     if (x1 <= x2) { // slice 1 left slice 2
       checkAssumingLeft(x1, x2, y1, y2, length1, width1, width2)

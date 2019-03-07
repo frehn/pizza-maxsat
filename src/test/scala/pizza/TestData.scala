@@ -1,6 +1,5 @@
 package pizza
 
-import maxsat.TestData.problem
 import util.rectangle
 
 object TestData {
@@ -31,7 +30,7 @@ object TestData {
     Slice(Cell(3, 0), 2, 3))
   )
 
-  val noSolutionOverlap = PizzaSolution(Seq(
+  val noSolutionOverlappingSlices = PizzaSolution(Seq(
     Slice(Cell(0, 0), 2, 3),
     Slice(Cell(0, 0), 3, 1)
   ))
@@ -44,8 +43,8 @@ object TestData {
     Slice(Cell(0, 1), 5, 2)
   ))
 
-  val noSolutionSliceDoesNotExist = PizzaSolution(Seq(
-    Slice(Cell(3, 0), 1, 1)
+  val noSolutionNonExistentSlices = PizzaSolution(Seq(
+    Slice(Cell(2, 1), 2, 3)
   ))
 
   lazy val problemData = pizzaProblemToData(problem)

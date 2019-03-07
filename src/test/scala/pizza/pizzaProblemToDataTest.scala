@@ -29,6 +29,13 @@ class pizzaProblemToDataTest extends FlatSpec with Matchers {
     pizzaProblemToData.allSlices(simpleProblem).toSet should equal(expectedSlices)
   }
 
+  it should "have no slices with x, y < 0" in {
+    val slices = pizzaProblemToData(problem).allSlices
+
+    all (slices.map(slice => slice.upperLeft.x)) should be >= 0
+    all (slices.map(slice => slice.upperLeft.y)) should be >= 0
+  }
+
   it should "compute correct slices for the example problem" in {
     val slices = pizzaProblemToData.allSlices(problem).toSet
 

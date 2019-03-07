@@ -5,5 +5,5 @@ object scoreSolution {
     solution.slices.map(sliceSize).sum
   }
 
-  private def sliceSize(slice: Slice) = slice.length*slice.width
+  private def sliceSize(slice: Slice) = slice.length*slice.height
 }

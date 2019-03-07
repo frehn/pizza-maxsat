@@ -1,8 +1,6 @@
 package pizza
 
 import org.scalatest._
-import pizza.TestData.problem
-import util.rectangle
 
 class pizzaProblemToMaxSatProblemTest extends FlatSpec with Matchers {
   "differentTuples" should "compute the n-element subsets of a small set" in {
