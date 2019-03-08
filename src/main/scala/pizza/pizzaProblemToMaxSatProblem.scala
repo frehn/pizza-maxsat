@@ -21,10 +21,12 @@ object pizzaProblemToMaxSatProblem {
     val pd = pizzaDefinition
     System.out.println("Computing 'Cell chosen' definition")
     val cc = cellChosenDefinition
-    System.out.println("Computing 'Is valid' definition")
-    val v = isValidDefinition
+    System.out.println("Computing 'Enough Ingredients' definition")
+    val v = enoughIngredientsDefinition
+    System.out.println("Computing 'non-Overlapping' definition")
+    val no = nonOverlappingDefinition
 
-    val problemFormulas = Seq(pd, cc, v)
+    val problemFormulas = pd ++ cc ++ v ++ no
 
     System.out.println("Computing clause form")
     val hardClauses = problemFormulas.flatMap(f => toClauses(f)).toSet
@@ -37,30 +39,37 @@ object pizzaProblemToMaxSatProblem {
     MaxSatProblem(hardClauses, cellClauses)
   }
 
-  private def cellChosenDefinition(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
-    And(data.allCells.par.map(cell => {
-      Imp(CellBelongsAtom(cell), Or(slicesContaining(cell).map(slice =>
-        SliceChosenAtom(slice)
-      )))
-    }).seq)
+  private def pizzaDefinition(implicit data: PizzaProblemData): Seq[Formula[PizzaAtom]] =
+    rectangle(0 until data.problem.columns, 0 until data.problem.row).map { case (x, y) =>
+      val c = Cell(x, y)
+      data.problem.ingredient(x, y) match {
+        case Tomato() => And(Seq(TomatoAtom(c), Not(MushroomAtom(c))))
+        case Mushroom() => And(Seq(MushroomAtom(c), Not(TomatoAtom(c))))
+      }
+    }
+
+  private def cellChosenDefinition(implicit data: PizzaProblemData): Seq[Formula[PizzaAtom]] = {
+    data.allCells.par.map(cell => {
+      Imp(CellBelongsAtom(cell), Or(slicesContaining(cell).map(slice => SliceChosenAtom(slice))))
+    }).seq
   }
+
+  private def enoughIngredientsDefinition(implicit data: PizzaProblemData): Seq[Formula[PizzaAtom]] =
+    data.allSlices.par.map(slice => Imp(Atom(SliceChosen(slice)), enoughIngredients(slice))).seq
+
+
+  private def nonOverlappingDefinition(implicit data: PizzaProblemData): Seq[Formula[PizzaAtom]] =
+    data.allSlices.par.flatMap(slice1 => computeOverlappingSlices(slice1)
+      .map(slice2 => Or(Seq(Not(SliceChosenAtom(slice1)), Not(SliceChosenAtom(slice2)))))).seq
 
   private def slicesContaining(cell: Cell)(implicit data: PizzaProblemData): Seq[Slice] = {
     rectangle(Math.max(cell.x - data.problem.maxCells - 1, 0) to cell.x, Math.max(cell.y - data.problem.maxCells - 1, 0) to cell.y).flatMap {
-      case (x, y) => {
+      case (x, y) =>
         val minimumLength = cell.x - x + 1
         val minimumHeight = cell.y - y + 1
         allSlicesAt(x, y, data.problem).filter(slice => slice.length >= minimumLength && slice.height >= minimumHeight)
-      }
     }
   }
-
-  private def isValidDefinition(implicit data: PizzaProblemData): Formula[PizzaAtom] =
-    And(data.allSlices.par.map(slice => Imp(Atom(SliceChosen(slice)), validSlice(slice))).seq ++
-      data.allSlices.par.map(slice =>
-        Imp(SliceChosenAtom(slice),
-          And(computeOverlappingSlices(slice).map(slice2 => Not(SliceChosenAtom(slice2)))))).seq
-    )
 
   // Compute those overlapping slices which are to the right and below of the
   // upperLeft of this slice.
@@ -73,16 +82,7 @@ object pizzaProblemToMaxSatProblem {
       .flatMap { case (x, y) => allSlicesAt(x, y, data.problem).filterNot(_ == slice) }
   }
 
-  private def pizzaDefinition(implicit data: PizzaProblemData): Formula[PizzaAtom] =
-    And(rectangle(0 until data.problem.columns, 0 until data.problem.row).map { case (x, y) =>
-      val c = Cell(x, y)
-      data.problem.ingredient(x, y) match {
-        case Tomato() => And(Seq(TomatoAtom(c), Not(MushroomAtom(c))))
-        case Mushroom() => And(Seq(MushroomAtom(c), Not(TomatoAtom(c))))
-      }
-    })
-
-  private def validSlice(slice: Slice)(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
+  private def enoughIngredients(slice: Slice)(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
     And(Seq(validIngredient(slice, Tomato()), validIngredient(slice, Mushroom())))
   }
 
