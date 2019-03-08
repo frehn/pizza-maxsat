@@ -17,5 +17,6 @@ class doSlicesOverlapTest extends FlatSpec with Matchers {
 
   it should "detect a non-overlap for some simple examples" in {
     doSlicesOverlap(Slice(Cell(1, 1), 1, 2), Slice(Cell(2, 1), 1, 1)) should be(false)
+    doSlicesOverlap(Slice(Cell(2, 4), 5, 1), Slice(Cell(2, 5), 5, 1)) should be(false)
   }
 }

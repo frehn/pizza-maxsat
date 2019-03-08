@@ -22,9 +22,9 @@ object doSlicesOverlap {
     if (x1 + length1 <= x2) {
       false
     } else if (y1 <= y2) { // slice 1 above left slice2
-      y2 <= y1 + width1
+      y2 < y1 + width1
     } else { // slice 1 below left slice2
-      y1 <= y2 + width2
+      y1 < y2 + width2
     }
   }
 }
