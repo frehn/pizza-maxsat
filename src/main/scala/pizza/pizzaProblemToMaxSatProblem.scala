@@ -54,14 +54,6 @@ object pizzaProblemToMaxSatProblem {
     }).seq
   }
 
-  private def enoughIngredientsDefinition(implicit data: PizzaProblemData): Seq[Formula[PizzaAtom]] =
-    data.allSlices.par.map(slice => Imp(Atom(SliceChosen(slice)), enoughIngredients(slice))).seq
-
-
-  private def nonOverlappingDefinition(implicit data: PizzaProblemData): Seq[Formula[PizzaAtom]] =
-    data.allSlices.par.flatMap(slice1 => computeOverlappingSlices(slice1)
-      .map(slice2 => Or(Seq(Not(SliceChosenAtom(slice1)), Not(SliceChosenAtom(slice2)))))).seq
-
   private def slicesContaining(cell: Cell)(implicit data: PizzaProblemData): Seq[Slice] = {
     rectangle(Math.max(cell.x - data.problem.maxCells - 1, 0) to cell.x, Math.max(cell.y - data.problem.maxCells - 1, 0) to cell.y).flatMap {
       case (x, y) =>
@@ -71,21 +63,15 @@ object pizzaProblemToMaxSatProblem {
     }
   }
 
-  // Compute those overlapping slices which are to the right and below of the
-  // upperLeft of this slice.
-  //
-  // The other slices will already have been considered (when looping from
-  // top-left to bottom-right through all slices.
-  private[pizza] def computeOverlappingSlices(slice: Slice)(implicit data: PizzaProblemData): Seq[Slice] = {
-    rectangle(slice.upperLeft.x until slice.upperLeft.x + slice.length,
-      slice.upperLeft.y until slice.upperLeft.y + slice.height)
-      .flatMap { case (x, y) => allSlicesAt(x, y, data.problem).filterNot(_ == slice) }
-  }
+  private def enoughIngredientsDefinition(implicit data: PizzaProblemData): Seq[Formula[PizzaAtom]] =
+    data.allSlices.par.map(slice => Imp(Atom(SliceChosen(slice)), enoughIngredients(slice))).seq
 
   private def enoughIngredients(slice: Slice)(implicit data: PizzaProblemData): Formula[PizzaAtom] = {
     And(Seq(validIngredient(slice, Tomato()), validIngredient(slice, Mushroom())))
   }
 
+  // TODO: optimize. We know which cells are tomatos and mushrooms.
+  // get tomato cells of slice, make cell tuples of those, and make Or(And(cellChosen)) for those.
   private def validIngredient(slice: Slice, ingredient: Ingredient)(implicit pp: PizzaProblemData): Formula[PizzaAtom] = {
     Or(differentCellTuples(slice).toSeq.map(cells =>
       And(cells.toSeq.map(cell => ingredient match {
@@ -103,6 +89,21 @@ object pizzaProblemToMaxSatProblem {
   private[pizza] def cells(slice: Slice): Seq[Cell] = (slice.upperLeft.x until slice.upperLeft.x + slice.length).flatMap(x =>
     (slice.upperLeft.y until slice.upperLeft.y + slice.height).map(y => Cell(x, y))
   )
+
+  private def nonOverlappingDefinition(implicit data: PizzaProblemData): Seq[Formula[PizzaAtom]] =
+    data.allSlices.par.flatMap(slice1 => computeOverlappingSlices(slice1)
+      .map(slice2 => Or(Seq(Not(SliceChosenAtom(slice1)), Not(SliceChosenAtom(slice2)))))).seq
+
+  // Compute those overlapping slices which are to the right and below of the
+  // upperLeft of this slice.
+  //
+  // The other slices will already have been considered (when looping from
+  // top-left to bottom-right through all slices.
+  private[pizza] def computeOverlappingSlices(slice: Slice)(implicit data: PizzaProblemData): Seq[Slice] = {
+    rectangle(slice.upperLeft.x until slice.upperLeft.x + slice.length,
+      slice.upperLeft.y until slice.upperLeft.y + slice.height)
+      .flatMap { case (x, y) => allSlicesAt(x, y, data.problem).filterNot(_ == slice) }
+  }
 }
 
 case class Cell(x: Int, y: Int)
@@ -110,24 +111,6 @@ case class Cell(x: Int, y: Int)
 case class Slice(upperLeft: Cell, length: Int, height: Int)
 
 private[pizza] object differentTuples {
-  /*  @tailrec
-    def apply[T](set: Set[T], length: Int, current: Set[Set[T]] = Set(Set[T]())): Set[Set[T]] = {
-      val finished = current.filter(_.size == length)
-      val notFinished = current.filter(_.size < length)
-
-      if (notFinished.isEmpty)
-        current
-      else {
-        val newCurrent = set.flatMap(x => {
-          notFinished.map(tuple =>
-            tuple + x
-          )
-        }) ++ finished
-
-        apply(set, length, newCurrent)
-      }
-    }
-  */
   def apply[T](set: Set[T], length: Int): Set[Set[T]] = {
     if (length == 0) Set(Set()) else
       set.flatMap(x => apply(set - x, length - 1).map(tuple => tuple + x))
