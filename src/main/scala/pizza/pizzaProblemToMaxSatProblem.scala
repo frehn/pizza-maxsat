@@ -42,11 +42,9 @@ object pizzaProblemToMaxSatProblem {
       case (x, y) =>
         val minimumLength = cell.x - x + 1
         val minimumHeight = cell.y - y + 1
-        allSlicesAt(x, y, data.problem).filter(slice => slice.length >= minimumLength && slice.height >= minimumHeight)
+        allSlicesAt(x, y)(data.problem).filter(slice => slice.length >= minimumLength && slice.height >= minimumHeight)
     }
   }
-
-
 
   private def nonOverlappingDefinition(implicit data: PizzaProblemData): Seq[Formula[PizzaAtom]] =
     data.allSlices.par.flatMap(slice1 => computeOverlappingSlices(slice1)
@@ -60,7 +58,7 @@ object pizzaProblemToMaxSatProblem {
   private[pizza] def computeOverlappingSlices(slice: Slice)(implicit data: PizzaProblemData): Seq[Slice] = {
     rectangle(slice.upperLeft.x until slice.upperLeft.x + slice.length,
       slice.upperLeft.y until slice.upperLeft.y + slice.height)
-      .flatMap { case (x, y) => allSlicesAt(x, y, data.problem).filterNot(_ == slice) }
+      .flatMap { case (x, y) => allSlicesAt(x, y)(data.problem).filterNot(_ == slice) }
   }
 }
 

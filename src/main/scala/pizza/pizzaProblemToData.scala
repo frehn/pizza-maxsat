@@ -8,7 +8,7 @@ object pizzaProblemToData {
   private[pizza] def allSlices(implicit pp: PizzaProblem): Seq[Slice] = {
     System.out.println("Computing all slices with enough ingredients")
     val ret = rectangle(0 until pp.columns, 0 until pp.rows).flatMap { case (i, j) =>
-      allSlicesAt(i, j, pp).filter(hasEnoughIngredients(_))
+      allSlicesAt(i, j)(pp)
     }
     System.out.println(s"Computed all ${ret.size} valid slices")
     ret

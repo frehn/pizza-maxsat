@@ -1,5 +1,8 @@
 package pizza
 
+import java.io.FileInputStream
+
+import pizza.parser.parsePizzaProblem
 import util.rectangle
 
 object TestData {
