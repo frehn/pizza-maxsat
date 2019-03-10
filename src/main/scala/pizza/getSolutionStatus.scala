@@ -1,11 +1,9 @@
 package pizza
 
-import util.rectangle
-
 object getSolutionStatus {
   def apply(data: PizzaProblemData, solution: PizzaSolution): SolutionStatus = {
     takeFirstDefinedOrElse(Seq(findOverlappingSlices(solution),
-      findSlicesWithTooLittleIngredients(data.problem, solution),
+      findSlicesWithTooLittleIngredients(solution)(data.problem),
       findSlicesTooLarge(data.problem, solution),
       findNonExistentSlices(data, solution)
     ), SolutionValid())
@@ -14,19 +12,11 @@ object getSolutionStatus {
   private def takeFirstDefinedOrElse[T](seq: Seq[Option[T]], orElse: T): T =
     seq.find(_.isDefined).getOrElse(Some(orElse)).get
 
-  private def findSlicesWithTooLittleIngredients(problem: PizzaProblem, solution: PizzaSolution): Option[TooLittleIngredients] = solution.slices.filter(slice => {
-    val count = rectangle(0 until slice.length, 0 until slice.height).foldLeft(IngredientCount(0, 0)) { case (result, (i, j)) =>
-      problem.ingredient.lift(slice.upperLeft.x + i, slice.upperLeft.y + j) match {
-        case Some(Tomato()) => IngredientCount(result.tomatos + 1, result.mushrooms)
-        case Some(Mushroom()) => IngredientCount(result.tomatos, result.mushrooms + 1)
-        case None => IngredientCount(result.tomatos, result.mushrooms)
-      }
+  private def findSlicesWithTooLittleIngredients(solution: PizzaSolution)(implicit problem: PizzaProblem): Option[TooLittleIngredients] =
+    solution.slices.filter(!hasEnoughIngredients(_)) match {
+      case slices if slices.nonEmpty => Some(TooLittleIngredients(slices))
+      case _ => None
     }
-    count.tomatos < problem.minIngredients || count.mushrooms < problem.minIngredients
-  }) match {
-    case slices if slices.length > 0 => Some(TooLittleIngredients(slices))
-    case _ => None
-  }
 
   private def findOverlappingSlices(solution: PizzaSolution): Option[OverlappingSlices] = {
     solution.slices.zipWithIndex.flatMap { case (slice1, i) =>
@@ -37,26 +27,26 @@ object getSolutionStatus {
         case None => Seq()
       }
     } match {
-      case slices if slices.length > 0 => Some(OverlappingSlices(slices))
+      case slices if slices.nonEmpty => Some(OverlappingSlices(slices))
       case _ => None
     }
   }
 
   private def findSlicesTooLarge(problem: PizzaProblem, solution: PizzaSolution): Option[SlicesTooLarge] = {
     solution.slices.filter(slice => slice.height * slice.length > problem.maxCells) match {
-      case slices if slices.length > 0 => Some(SlicesTooLarge(slices))
+      case slices if slices.nonEmpty => Some(SlicesTooLarge(slices))
       case _ => None
     }
   }
 
   private def findNonExistentSlices(data: PizzaProblemData, solution: PizzaSolution): Option[NonExistentSlices] =
     solution.slices.filter(slice => !data.allSlices.contains(slice)) match {
-      case slices if slices.length > 0 => Some(NonExistentSlices(slices))
+      case slices if slices.nonEmpty => Some(NonExistentSlices(slices))
       case _ => None
     }
 }
 
-case class IngredientCount(tomatos: Int, mushrooms: Int)
+case class IngredientCount(tomatoes: Int, mushrooms: Int)
 
 sealed trait SolutionStatus
 

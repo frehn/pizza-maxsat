@@ -20,7 +20,7 @@ object Main extends App {
         System.out.println(s"Number of slices: ${solution.slices.size}")
         val score = scoreSolution(solution)
         System.out.println(s"Number of cells on slices: $score")
-        System.out.println(s"Number of cells not on slices: ${problem.columns*problem.row - score}")
+        System.out.println(s"Number of cells not on slices: ${problem.columns*problem.rows - score}")
         System.out.println()
         System.out.println("Details")
         System.out.println("-------")

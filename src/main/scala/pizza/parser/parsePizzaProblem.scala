@@ -16,7 +16,7 @@ object parsePizzaProblem {
       }
     }.toMap
 
-    PizzaProblem(row = tokens(0).toInt,
+    PizzaProblem(rows = tokens(0).toInt,
       columns = tokens(1).toInt,
       minIngredients = tokens(2).toInt,
       maxCells = tokens(3).toInt,

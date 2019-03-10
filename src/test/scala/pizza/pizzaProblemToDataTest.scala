@@ -3,25 +3,24 @@ package pizza
 import org.scalatest.{FlatSpec, Matchers}
 import pizza.TestData.problem
 import util.rectangle
+import org.scalatest.Inspectors._
 
 class pizzaProblemToDataTest extends FlatSpec with Matchers {
-  "pizzaProblemToData" should "compute correct slices for a very small problem" in {
+  "pizzaProblemToData" should "compute all valid slices for a very small problem" in {
     val simpleProblem = {
-      val R = 2
-      val C = 3
-      val L = 3
-      val H = 4
+      val rows = 2
+      val columns = 3
+      val minIngredients = 2
+      val maxCells = 4
 
-      val ingredients = rectangle(0 until R, 0 until C)
-        .map { case (x, y) => (x, y) -> Tomato() }
+      val ingredients = rectangle(0 until columns, 0 until rows)
+        .map { case (x, y) => (x, y) -> (if (y == 0) Tomato() else Mushroom()) }
         .toMap
 
-      PizzaProblem(R, C, L, H, ingredients)
+      PizzaProblem(rows, columns, minIngredients, maxCells, ingredients)
     }
 
     val expectedSlices = Set(
-      Slice(Cell(0, 0), 3, 1),
-      Slice(Cell(0, 1), 3, 1),
       Slice(Cell(0, 0), 2, 2),
       Slice(Cell(1, 0), 2, 2)
     )
@@ -32,21 +31,31 @@ class pizzaProblemToDataTest extends FlatSpec with Matchers {
   it should "have no slices with x, y < 0" in {
     val slices = pizzaProblemToData(problem).allSlices
 
-    all (slices.map(slice => slice.upperLeft.x)) should be >= 0
-    all (slices.map(slice => slice.upperLeft.y)) should be >= 0
+    all(slices.map(slice => slice.upperLeft.x)) should be >= 0
+    all(slices.map(slice => slice.upperLeft.y)) should be >= 0
   }
 
-  it should "compute correct slices for the example problem" in {
+  it should "compute valid slices for the example problem" in {
     val slices = pizzaProblemToData.allSlices(problem).toSet
 
-    System.out.println("SLICES")
-    System.out.println(slices)
+    val expectedSlices = Set(
+      Slice(Cell(1, 0), 1, 3),
+      Slice(Cell(2, 0), 1, 3),
+      Slice(Cell(3, 0), 1, 3),
+      Slice(Cell(1, 0), 2, 3),
+      Slice(Cell(2, 0), 2, 3),
+      Slice(Cell(3, 0), 2, 3),
+      Slice(Cell(1, 0), 1, 2),
+      Slice(Cell(0, 1), 2, 1)
+    )
 
-    slices should contain(Slice(Cell(1, 1), 1, 1))
+    forAll (expectedSlices) {
+      slice => slices should contain(slice)
+    }
+
     slices should not contain Slice(Cell(2, 3), 1, 4)
-
+    slices should not contain Slice(Cell(0, 0), 4, 1)
   }
-
 
   "cells" should "compute the cells of a slice" in {
     val rows = 3
@@ -62,7 +71,7 @@ class pizzaProblemToDataTest extends FlatSpec with Matchers {
       Cell(3, 3)
     )
 
-    val computedCells = pizzaProblemToMaxSatProblem.cells(slice)
+    val computedCells = pizzaProblemToData.cells(slice)
 
     computedCells.length should equal(rows * cols)
     computedCells.toSet should equal(expectedCells)
