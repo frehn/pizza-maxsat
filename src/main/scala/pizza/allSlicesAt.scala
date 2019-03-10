@@ -3,13 +3,12 @@ package pizza
 object allSlicesAt {
   def apply(x: Int, y: Int)(implicit problem: PizzaProblem): Seq[Slice] =
     (1 to problem.maxCells).flatMap(l => {
-      (ceilDivision(problem.minIngredients, l) to floorDivision(problem.maxCells, l)).flatMap(w => {
-        val slice = Slice(Cell(x, y), l, w)
-        if (x + l - 1 < problem.columns && y + w - 1 < problem.rows && hasEnoughIngredients(slice))
-          Seq(slice)
+      (ceilDivision(problem.minIngredients, l) to floorDivision(problem.maxCells, l)).flatMap(w =>
+        if (x + l - 1 < problem.columns && y + w - 1 < problem.rows && hasEnoughIngredients(x, y, l, w))
+          Seq(Slice(Cell(x, y), l, w))
         else
           Seq()
-      })
+      )
     })
 
   private def floorDivision(a: Int, b: Int): Int = a / b

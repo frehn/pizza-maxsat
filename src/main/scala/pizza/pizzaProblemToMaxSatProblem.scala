@@ -1,10 +1,12 @@
 package pizza
 
 import maxsat._
+import org.slf4j.{Logger, LoggerFactory}
 import util.rectangle
+import util.MapUtils.LoggingParallelMap
 
 object pizzaProblemToMaxSatProblem {
-
+  private implicit val logger: Logger = LoggerFactory.getLogger(getClass)
   private def PizzaClause(negative: Set[Atom[PizzaAtom]], positive: Set[Atom[PizzaAtom]]): Clause[PizzaAtom] =
     Clause(negative, positive)
 
@@ -13,18 +15,17 @@ object pizzaProblemToMaxSatProblem {
   private def CellBelongsAtom(cell: Cell): Atom[PizzaAtom] = Atom(CellBelongs(cell.x, cell.y))
 
   def apply(implicit data: PizzaProblemData): MaxSatProblem[PizzaAtom] = {
-    System.out.println("Computing 'Cell chosen' definition")
+    logger.info("Computing 'Cell chosen' definition")
     val cc = cellChosenDefinition
-    System.out.println("Computing 'non-Overlapping' definition")
+    logger.info("Computing 'non-Overlapping' definition")
     val no = nonOverlappingDefinition
 
     val problemFormulas = cc ++ no
 
-    System.out.println("Computing clause form")
+    logger.info("Computing clause form")
     val hardClauses = problemFormulas.flatMap(f => toClauses(f)).toSet
-    System.out.println("Computed clause form")
 
-    System.out.println("Computing 'Cell belongs' clauses")
+    logger.info("Computing 'Cell belongs' clauses")
     val cellClauses: Set[Clause[PizzaAtom]] = data.allCells.map(cell =>
       PizzaClause(Set(), Set(CellBelongsAtom(cell)))).toSet
 
@@ -32,7 +33,7 @@ object pizzaProblemToMaxSatProblem {
   }
 
   private def cellChosenDefinition(implicit data: PizzaProblemData): Seq[Formula[PizzaAtom]] = {
-    data.allCells.par.map(cell => {
+    data.allCells.par.mapAndLogProgress(cell => {
       Imp(CellBelongsAtom(cell), Or(slicesContaining(cell).map(slice => SliceChosenAtom(slice))))
     }).seq
   }
@@ -47,7 +48,7 @@ object pizzaProblemToMaxSatProblem {
   }
 
   private def nonOverlappingDefinition(implicit data: PizzaProblemData): Seq[Formula[PizzaAtom]] =
-    data.allSlices.par.flatMap(slice1 => computeOverlappingSlices(slice1)
+    data.allSlices.par.flatMapAndLogProgress(slice1 => computeOverlappingSlices(slice1)
       .map(slice2 => Or(Seq(Not(SliceChosenAtom(slice1)), Not(SliceChosenAtom(slice2)))))).seq
 
   // Compute those overlapping slices which are to the right and below of the

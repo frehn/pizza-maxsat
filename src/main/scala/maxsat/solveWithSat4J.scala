@@ -15,9 +15,6 @@ object solveWithSat4J {
 
     val variableMap = maxSatProblemToDimacs(problem, new FileOutputStream(file))
 
-    //System.out.println("Dimacs:")
-    //System.out.println(scala.io.Source.fromInputStream(new FileInputStream(file)).mkString)
-
     val solverProblem = reader.parseInstance(new FileInputStream(file))
     Option(solverProblem.findModel()) match {
       case None => None
