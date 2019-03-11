@@ -38,8 +38,9 @@ object MapUtils {
         val cnt = finishedCnt.get
         if (cnt == seq.length)
           pool.shutdown()
-        else
-          logger.info(f"${cnt / seq.length.toFloat}%2.2f done")
+        else {
+          logger.info(f"$cnt / ${seq.length.toFloat} (${(cnt / seq.length.toFloat) * 100.0}%2.2f%%) done")
+        }
       }, 10, 10, TimeUnit.SECONDS)
     }
   }
