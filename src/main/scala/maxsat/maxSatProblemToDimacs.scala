@@ -30,7 +30,7 @@ object maxSatProblemToDimacs {
 
     val tempFile = File.createTempFile("pizza-maxsat", ".pre.dimacs")
 
-    logger.debug(s"Writing to ${tempFile.getAbsolutePath}")
+    logger.info(s"Writing to ${tempFile.getAbsolutePath}")
 
     val future = maxSatProblem.hardClauses.map(c => {
       clauseNum.incrementAndGet()
@@ -39,11 +39,12 @@ object maxSatProblemToDimacs {
       Source(maxSatProblem.softClauses.map(c => dimacsLine(1, c, variableMap))))
       .map(t => {
         //println(t)
-        ByteString(t)
+        ByteString(t + "\n")
       })
       .runWith(FileIO.toPath(tempFile.toPath))
 
     Await.ready(future, Duration.Inf)
+    system.terminate()
 
     logger.debug("Preparing final dimacs file")
     writeDimacsFile(tempFile, top, clauseNum, variableMap, outFile)
@@ -52,7 +53,7 @@ object maxSatProblemToDimacs {
   }
 
   private def writeDimacsFile[T](tempFile: File, top: Int, clauseNum: AtomicInteger, variableMap: ConcurrentHashMap[Atom[T], Int], outFile: File) = {
-    val firstLine = IOUtils.toInputStream(s"p wcnf ${variableMap.size} ${clauseNum.get} $top", Charset.forName("UTF8"));
+    val firstLine = IOUtils.toInputStream(s"p wcnf ${variableMap.size} ${clauseNum.get} $top\n", Charset.forName("UTF8"));
     val rest = new FileInputStream(tempFile)
 
     val inStream = new SequenceInputStream(firstLine, rest)

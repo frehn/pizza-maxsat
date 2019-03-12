@@ -1,6 +1,6 @@
 package maxsat
 
-import java.io.{File, FileInputStream, FileOutputStream}
+import java.io.{File, FileInputStream}
 
 import org.sat4j.maxsat.reader.WDimacsReader
 import org.sat4j.maxsat.{SolverFactory, WeightedMaxSatDecorator}
@@ -13,7 +13,7 @@ object solveWithSat4J {
 
     val file = File.createTempFile("pizza-maxsat", ".dimacs")
 
-    val variableMap = maxSatProblemToDimacs(problem, file.toPath)
+    val variableMap = maxSatProblemToDimacs(problem, file)
 
     val solverProblem = reader.parseInstance(new FileInputStream(file))
     Option(solverProblem.findModel()) match {

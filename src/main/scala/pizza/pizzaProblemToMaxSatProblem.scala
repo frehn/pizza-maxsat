@@ -5,7 +5,6 @@ import akka.stream.scaladsl.Source
 import maxsat._
 import org.slf4j.{Logger, LoggerFactory}
 import util.rectangle
-import util.MapUtils.LoggingParallelMap
 
 object pizzaProblemToMaxSatProblem {
   private implicit val logger: Logger = LoggerFactory.getLogger(getClass)
