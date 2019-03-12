@@ -1,5 +1,7 @@
 package pizza
 
+import akka.NotUsed
+import akka.stream.scaladsl.Source
 import maxsat._
 import org.slf4j.{Logger, LoggerFactory}
 import util.rectangle
@@ -7,6 +9,7 @@ import util.MapUtils.LoggingParallelMap
 
 object pizzaProblemToMaxSatProblem {
   private implicit val logger: Logger = LoggerFactory.getLogger(getClass)
+
   private def PizzaClause(negative: Set[Atom[PizzaAtom]], positive: Set[Atom[PizzaAtom]]): Clause[PizzaAtom] =
     Clause(negative, positive)
 
@@ -23,7 +26,7 @@ object pizzaProblemToMaxSatProblem {
     val problemFormulas = cc ++ no
 
     logger.info("Computing clause form")
-    val hardClauses = problemFormulas.flatMap(f => toClauses(f)).toSet
+    val hardClauses = problemFormulas.flatMapConcat(f => toClauses(f))
 
     logger.info("Computing 'Cell belongs' clauses")
     val cellClauses: Set[Clause[PizzaAtom]] = data.allCells.map(cell =>
@@ -32,10 +35,9 @@ object pizzaProblemToMaxSatProblem {
     MaxSatProblem(hardClauses, cellClauses)
   }
 
-  private def cellChosenDefinition(implicit data: PizzaProblemData): Seq[Formula[PizzaAtom]] = {
-    data.allCells.par.mapAndLogProgress(cell => {
-      Imp(CellBelongsAtom(cell), Or(slicesContaining(cell).map(slice => SliceChosenAtom(slice))))
-    }).seq
+  private def cellChosenDefinition(implicit data: PizzaProblemData): Source[Formula[PizzaAtom], NotUsed] = {
+    Source(data.allCells).map(cell =>
+      Imp(CellBelongsAtom(cell), Or(slicesContaining(cell).map(slice => SliceChosenAtom(slice)))))
   }
 
   private def slicesContaining(cell: Cell)(implicit data: PizzaProblemData): Seq[Slice] = {
@@ -47,19 +49,20 @@ object pizzaProblemToMaxSatProblem {
     }
   }
 
-  private def nonOverlappingDefinition(implicit data: PizzaProblemData): Seq[Formula[PizzaAtom]] =
-    data.allSlices.par.flatMapAndLogProgress(slice1 => computeOverlappingSlices(slice1)
-      .map(slice2 => Or(Seq(Not(SliceChosenAtom(slice1)), Not(SliceChosenAtom(slice2)))))).seq
+  private def nonOverlappingDefinition(implicit data: PizzaProblemData): Source[Formula[PizzaAtom], NotUsed] =
+    Source(data.allSlices).flatMapConcat(slice1 => Source(computeOverlappingSlices(slice1))
+      .map(slice2 => Or(Seq(Not(SliceChosenAtom(slice1)), Not(SliceChosenAtom(slice2))))))
 
   // Compute those overlapping slices which are to the right and below of the
   // upperLeft of this slice.
   //
   // The other slices will already have been considered (when looping from
   // top-left to bottom-right through all slices.
-  private[pizza] def computeOverlappingSlices(slice: Slice)(implicit data: PizzaProblemData): Seq[Slice] = {
+  private[pizza] def computeOverlappingSlices(slice: Slice)(implicit data: PizzaProblemData): List[Slice] = {
     rectangle(slice.upperLeft.x until slice.upperLeft.x + slice.length,
       slice.upperLeft.y until slice.upperLeft.y + slice.height)
       .flatMap { case (x, y) => allSlicesAt(x, y)(data.problem).filterNot(_ == slice) }
+      .toList
   }
 }
 

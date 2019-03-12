@@ -13,7 +13,7 @@ object solveWithSat4J {
 
     val file = File.createTempFile("pizza-maxsat", ".dimacs")
 
-    val variableMap = maxSatProblemToDimacs(problem, new FileOutputStream(file))
+    val variableMap = maxSatProblemToDimacs(problem, file.toPath)
 
     val solverProblem = reader.parseInstance(new FileInputStream(file))
     Option(solverProblem.findModel()) match {

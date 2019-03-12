@@ -1,33 +1,68 @@
 package maxsat
 
-import java.io.{OutputStream, OutputStreamWriter, PrintWriter}
+import java.io._
+import java.nio.charset.Charset
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicInteger
+
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
+import akka.stream.scaladsl.{FileIO, Source}
+import akka.util.ByteString
+import org.apache.commons.io.IOUtils
+import org.slf4j.LoggerFactory
+
+import scala.collection.JavaConverters._
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 
 object maxSatProblemToDimacs {
+  private val logger = LoggerFactory.getLogger(getClass)
+
   def apply[T](maxSatProblem: MaxSatProblem[T],
-               out: OutputStream): Map[Atom[T], Int] = {
-    val writer = new PrintWriter(new OutputStreamWriter(out))
-    val clauseNum = maxSatProblem.clauses.size
+               outFile: File): Map[Atom[T], Int] = {
+    implicit val system = ActorSystem("Output")
+    implicit val materializer = ActorMaterializer()
     val top = maxSatProblem.softClauses.size + 1
+    val clauseNum = new AtomicInteger(maxSatProblem.softClauses.size)
 
-    val variables = getVariables(maxSatProblem)
-    val variableMap = variables.toSeq.zipWithIndex.map { case (v, i) => v -> (i + 1) }.toMap
+    val variableMap = new ConcurrentHashMap[Atom[T], Int]()
 
-    writer.println(s"p wcnf ${variables.size} $clauseNum $top")
+    val tempFile = File.createTempFile("pizza-maxsat", ".pre.dimacs")
 
-    val lines = maxSatProblem.hardClauses.map(c => dimacsLine(top, c, variableMap)).toSeq ++
-      maxSatProblem.softClauses.map(c => dimacsLine(1, c, variableMap)).toSeq
+    logger.debug(s"Writing to ${tempFile.getAbsolutePath}")
 
-    writer.print(lines.mkString("\n"))
+    val future = maxSatProblem.hardClauses.map(c => {
+      clauseNum.incrementAndGet()
+      dimacsLine(top, c, variableMap)
+    }).concat(
+      Source(maxSatProblem.softClauses.map(c => dimacsLine(1, c, variableMap))))
+      .map(t => {
+        //println(t)
+        ByteString(t)
+      })
+      .runWith(FileIO.toPath(tempFile.toPath))
 
-    writer.close()
+    Await.ready(future, Duration.Inf)
 
-    variableMap
+    logger.debug("Preparing final dimacs file")
+    writeDimacsFile(tempFile, top, clauseNum, variableMap, outFile)
+
+    variableMap.asScala.toMap
   }
 
-  private def dimacsLine[T](weight: Int, c: Clause[T], variableMap: Map[Atom[T], Int]): String = {
-    s"$weight ${c.positive.map(atom => variableMap(atom)).mkString(" ")} ${c.negative.map(atom => s"-${variableMap(atom)}").mkString(" ")} 0"
+  private def writeDimacsFile[T](tempFile: File, top: Int, clauseNum: AtomicInteger, variableMap: ConcurrentHashMap[Atom[T], Int], outFile: File) = {
+    val firstLine = IOUtils.toInputStream(s"p wcnf ${variableMap.size} ${clauseNum.get} $top", Charset.forName("UTF8"));
+    val rest = new FileInputStream(tempFile)
+
+    val inStream = new SequenceInputStream(firstLine, rest)
+    val outStream = new FileOutputStream(outFile)
+
+    IOUtils.copy(inStream, outStream)
   }
 
-  private[maxsat] def getVariables[T](maxSatProblem: MaxSatProblem[T]): Set[Atom[T]] =
-    maxSatProblem.clauses.flatMap(clause => clause.positive ++ clause.negative)
+  private def dimacsLine[T](weight: Int, c: Clause[T], variableMap: ConcurrentHashMap[Atom[T], Int]): String = {
+    s"$weight ${c.positive.map(atom => variableMap.computeIfAbsent(atom, _ => variableMap.size() + 1)).mkString(" ")} ${c.negative.map(atom => s"-${variableMap.computeIfAbsent(atom, _ => variableMap.size() + 1)}").mkString(" ")} 0"
+  }
+
 }

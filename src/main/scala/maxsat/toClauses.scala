@@ -1,19 +1,25 @@
 package maxsat
 
+import akka.NotUsed
+import akka.stream.scaladsl.Source
+
 object toClauses {
-  def apply[T](f: Formula[T]): Set[Clause[T]] = {
+  def apply[T](f: Formula[T]): Source[Clause[T], NotUsed] =
+    Source(rec(f))
+
+  def rec[T](f: Formula[T]): Set[Clause[T]] = {
     f match {
       case a @ Atom(_) => Set(Clause(negative = Set(), positive = Set(a)))
-      case And(conjuncts) => conjuncts.flatMap( f => apply(f) ).toSet
-      case Eq(left, right) => apply(And(Seq(Imp(left, right), Imp(right, left))))
-      case Imp(left, right) => apply(Or(Seq(Not(left), right)))
+      case And(conjuncts) => conjuncts.flatMap( f => rec(f) ).toSet
+      case Eq(left, right) => rec(And(Seq(Imp(left, right), Imp(right, left))))
+      case Imp(left, right) => rec(Or(Seq(Not(left), right)))
       case Not( a @ Atom(_)) => Set(Clause(negative = Set(a), positive = Set()))
-      case Not(Not(g)) => apply(g)
-      case Not(Or(disjuncts)) => apply(And(disjuncts.map(Not(_))))
-      case Not(And(conjuncts)) => apply(Or(conjuncts.map(Not(_))))
-      case Not(Imp(left, right)) => apply(And(Seq(left, Not(right))))
-      case Not(Eq(left, right)) => apply(Not(And(Seq(Imp(left, right), Imp(right, left)))))
-      case Or(disjuncts) => merge(disjuncts.map(d => apply(d)))
+      case Not(Not(g)) => rec(g)
+      case Not(Or(disjuncts)) => rec(And(disjuncts.map(Not(_))))
+      case Not(And(conjuncts)) => rec(Or(conjuncts.map(Not(_))))
+      case Not(Imp(left, right)) => rec(And(Seq(left, Not(right))))
+      case Not(Eq(left, right)) => rec(Not(And(Seq(Imp(left, right), Imp(right, left)))))
+      case Or(disjuncts) => merge(disjuncts.map(d => rec(d)))
     }
   }
 

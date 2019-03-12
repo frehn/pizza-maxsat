@@ -1,3 +1,3 @@
 package pizza
 
-case class PizzaProblemData(allSlices: Seq[Slice], allCells: Seq[Cell], problem: PizzaProblem)
+case class PizzaProblemData(allSlices: List[Slice], allCells: List[Cell], problem: PizzaProblem)

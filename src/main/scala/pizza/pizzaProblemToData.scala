@@ -7,7 +7,7 @@ import util.MapUtils.LoggingParallelMap
 object pizzaProblemToData {
   private implicit val logger: Logger = LoggerFactory.getLogger(getClass)
 
-  def apply(pp: PizzaProblem): PizzaProblemData = PizzaProblemData(allSlices(pp), allCells(pp), pp)
+  def apply(pp: PizzaProblem): PizzaProblemData = PizzaProblemData(allSlices(pp).toList, allCells(pp).toList, pp)
 
   private[pizza] def allSlices(implicit pp: PizzaProblem): Seq[Slice] = {
     logger.debug("Computing all slices with enough ingredients")
