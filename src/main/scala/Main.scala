@@ -1,11 +1,14 @@
 import java.io.FileInputStream
 
-import maxsat.solveWithSat4J
+import org.slf4j.Logger
+import maxsat.{Atom, MaxSatSolution, solveWithSat4J}
 import org.slf4j.LoggerFactory
 import pizza._
 import pizza.parser.parsePizzaProblem
 
 object Main extends App {
+
+
   override def main(args: Array[String]): Unit = {
     val logger = LoggerFactory.getLogger(getClass)
     if (args.length != 1) {
@@ -26,7 +29,7 @@ object Main extends App {
         val solution = maxSatSolutionToPizzaSolution(maxSatSolution)
         logger.info("Solution")
         logger.info("--------")
-        logger.info(s"Solution status: ${getSolutionStatus(data, solution)}")
+        printSolutionStatusInfo(data, maxSatSolution, solution, logger)
         logger.info("")
         logger.info(s"Number of slices: ${solution.slices.size}")
         val score = scoreSolution(solution)
@@ -38,5 +41,25 @@ object Main extends App {
         solution.slices.foreach(slice => logger.info(slice.toString))
       case None => logger.info("No solution found")
     }
+  }
+
+  private def printSolutionStatusInfo(data: PizzaProblemData, maxSatSolution: MaxSatSolution[PizzaAtom], pizzaSolution: PizzaSolution, logger: Logger): Unit = {
+    val status = getSolutionStatus(data, pizzaSolution)
+    logger.info(s"Solution status: $status")
+
+    status match {
+      case OverlappingSlices(slices) =>
+        slices.foreach { case (s1, s2) =>
+          logSliceModelInfo(maxSatSolution, s1, logger)
+          logSliceModelInfo(maxSatSolution, s2, logger)
+        }
+      case _ =>
+    }
+
+
+  }
+
+  private def logSliceModelInfo(maxSatSolution: MaxSatSolution[PizzaAtom], slice: Slice, logger: Logger): Unit = {
+    logger.info(s"$slice chosen ~ ${maxSatSolution.variableMap(Atom(SliceChosen(slice)))}")
   }
 }

@@ -24,7 +24,7 @@ object solveWithSat4J {
         else
           atom -> false
       }
-        Some(MaxSatSolution(myModel))
+        Some(MaxSatSolution(myModel, variableMap))
     }
   }
 }

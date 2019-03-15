@@ -52,15 +52,14 @@ object pizzaProblemToMaxSatProblem {
     Source(data.allSlices).flatMapConcat(slice1 => Source(computeOverlappingSlices(slice1))
       .map(slice2 => Or(Seq(Not(SliceChosenAtom(slice1)), Not(SliceChosenAtom(slice2))))))
 
-  // Compute those overlapping slices which are to the right and below of the
-  // upperLeft of this slice.
-  //
-  // The other slices will already have been considered (when looping from
-  // top-left to bottom-right through all slices.
+
+  // TODO: Maybe possible to optimize by using a specialized allSlicesAt
   private[pizza] def computeOverlappingSlices(slice: Slice)(implicit data: PizzaProblemData): List[Slice] = {
-    rectangle(slice.upperLeft.x until slice.upperLeft.x + slice.length,
-      slice.upperLeft.y until slice.upperLeft.y + slice.height)
-      .flatMap { case (x, y) => allSlicesAt(x, y)(data.problem).filterNot(_ == slice) }
+    rectangle(slice.upperLeft.x-data.problem.maxCells to slice.upperLeft.x + slice.length,
+      slice.upperLeft.y-data.problem.maxCells to slice.upperLeft.y + slice.height)
+      .flatMap{ case (x,y) => allSlicesAt(x, y)(data.problem)
+      .filter( slice2 => slice2 != slice && doSlicesOverlap(slice2, slice))
+      }
       .toList
   }
 }

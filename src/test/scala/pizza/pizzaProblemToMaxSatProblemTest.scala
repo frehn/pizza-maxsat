@@ -1,6 +1,7 @@
 package pizza
 
 import org.scalatest._
+import pizza.parser.parsePizzaProblem
 
 class pizzaProblemToMaxSatProblemTest extends FlatSpec with Matchers {
   "differentTuples" should "compute the n-element subsets of a small set" in {
@@ -26,6 +27,16 @@ class pizzaProblemToMaxSatProblemTest extends FlatSpec with Matchers {
     val overlappingSlices = pizzaProblemToMaxSatProblem.computeOverlappingSlices(slice)(TestData.problemData)
 
     overlappingSlices should contain(Slice(Cell(1, 1), 2, 2))
+  }
+
+  it should "compute an example correctly (1)" in {
+    val b_small = parsePizzaProblem(scala.io.Source.fromInputStream(getClass.getClassLoader.getResourceAsStream("b_small.in")).mkString)
+    val data = pizzaProblemToData(b_small)
+    val slice1 = Slice(Cell(5, 1), 2, 2)
+    val slice2 = Slice(Cell(1, 2), 5, 1)
+    val overlappingSlices = pizzaProblemToMaxSatProblem.computeOverlappingSlices(slice1)(data)
+
+    overlappingSlices should contain(slice2)
   }
 }
 
