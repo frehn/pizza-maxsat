@@ -13,8 +13,10 @@ import org.apache.commons.io.IOUtils
 import org.slf4j.LoggerFactory
 
 import scala.collection.JavaConverters._
+import scala.collection.mutable
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
+
 
 object maxSatProblemToDimacs {
   private val logger = LoggerFactory.getLogger(getClass)
@@ -26,7 +28,7 @@ object maxSatProblemToDimacs {
     val top = maxSatProblem.softClauses.size + 1
     val clauseNum = new AtomicInteger(maxSatProblem.softClauses.size)
 
-    val variableMap = new ConcurrentHashMap[Atom[T], Int]()
+    val variableMap = mutable.Map[Atom[T], Int]()
 
     val tempFile = File.createTempFile("pizza-maxsat", ".pre.dimacs")
 
@@ -49,10 +51,10 @@ object maxSatProblemToDimacs {
     logger.debug("Preparing final dimacs file")
     writeDimacsFile(tempFile, top, clauseNum, variableMap, outFile)
 
-    variableMap.asScala.toMap
+    variableMap.toMap
   }
 
-  private def writeDimacsFile[T](tempFile: File, top: Int, clauseNum: AtomicInteger, variableMap: ConcurrentHashMap[Atom[T], Int], outFile: File) = {
+  private def writeDimacsFile[T](tempFile: File, top: Int, clauseNum: AtomicInteger, variableMap: mutable.Map[Atom[T], Int], outFile: File) = {
     val firstLine = IOUtils.toInputStream(s"p wcnf ${variableMap.size} ${clauseNum.get} $top\n", Charset.forName("UTF8"));
     val rest = new FileInputStream(tempFile)
 
@@ -62,8 +64,7 @@ object maxSatProblemToDimacs {
     IOUtils.copy(inStream, outStream)
   }
 
-  private def dimacsLine[T](weight: Int, c: Clause[T], variableMap: ConcurrentHashMap[Atom[T], Int]): String = {
-    s"$weight ${c.positive.map(atom => variableMap.computeIfAbsent(atom, _ => variableMap.size() + 1)).mkString(" ")} ${c.negative.map(atom => s"-${variableMap.computeIfAbsent(atom, _ => variableMap.size() + 1)}").mkString(" ")} 0"
+  private def dimacsLine[T](weight: Int, c: Clause[T], variableMap: mutable.Map[Atom[T], Int]): String = {
+    s"$weight ${c.positive.map(atom => variableMap.getOrElseUpdate(atom, variableMap.size + 1)).mkString(" ")} ${c.negative.map(atom => s"-${variableMap.getOrElseUpdate(atom, variableMap.size + 1)}").mkString(" ")} 0"
   }
-
 }

@@ -22,7 +22,7 @@ object pizzaProblemToMaxSatProblem {
     logger.info("Computing 'non-Overlapping' definition")
     val no = nonOverlappingDefinition
 
-    val problemFormulas = cc ++ no
+    val problemFormulas = cc.concat(no)
 
     logger.info("Computing clause form")
     val hardClauses = problemFormulas.flatMapConcat(f => toClauses(f))

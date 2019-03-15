@@ -1,9 +1,27 @@
 package maxsat
 
-import org.scalatest.{FlatSpec, Matchers}
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
+import akka.stream.scaladsl.Sink
+import org.scalatest.{BeforeAndAfter, FlatSpec, Matchers}
 
-class toClausesTest extends FlatSpec with Matchers {
-  "toCNF" should "convert a formula to CNF (1)" in {
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
+
+class toClausesTest extends FlatSpec with Matchers with BeforeAndAfter {
+  implicit var system: ActorSystem = _
+  implicit var materializer: ActorMaterializer = _
+
+  before {
+    system = ActorSystem("Output")
+    materializer = ActorMaterializer()
+  }
+
+  after {
+    system.terminate()
+  }
+
+  "toClauses" should "convert a formula to CNF (1)" in {
     val a = Atom[Int](1)
     val b = Atom[Int](2)
     val c = Atom[Int](3)
@@ -18,7 +36,7 @@ class toClausesTest extends FlatSpec with Matchers {
       Clause(negative = Set[Atom[Int]](), positive = Set(b, d))
     )
 
-    toClauses(formula) should equal(expectedClauses)
+    Await.result(toClauses(formula).runWith(Sink.seq), Duration.Inf).toSet should equal(expectedClauses)
   }
 
   it should "convert a formula to CNF (2)" in {
@@ -42,6 +60,6 @@ class toClausesTest extends FlatSpec with Matchers {
       Clause(negative = Set[Atom[Int]](), positive = Set(b, d, f)),
     )
 
-    toClauses(formula) should equal(expectedClauses)
+    Await.result(toClauses(formula).runWith(Sink.seq), Duration.Inf).toSet should equal(expectedClauses)
   }
 }
