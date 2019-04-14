@@ -23,7 +23,6 @@ object Main extends App {
     logger.info("Translating to MaxSAT...")
     val maxSatProblem = pizzaProblemToMaxSatProblem(data)
 
-    logger.info("Solving with SAT4J...")
     solveWithSat4J(maxSatProblem) match {
       case Some(maxSatSolution) =>
         val solution = maxSatSolutionToPizzaSolution(maxSatSolution)

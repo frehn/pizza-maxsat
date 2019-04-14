@@ -3,12 +3,9 @@ package pizza
 import akka.NotUsed
 import akka.stream.scaladsl.Source
 import maxsat._
-import org.slf4j.{Logger, LoggerFactory}
 import util.rectangle
 
 object pizzaProblemToMaxSatProblem {
-  private implicit val logger: Logger = LoggerFactory.getLogger(getClass)
-
   private def PizzaClause(negative: Set[Atom[PizzaAtom]], positive: Set[Atom[PizzaAtom]]): Clause[PizzaAtom] =
     Clause(negative, positive)
 
@@ -17,17 +14,12 @@ object pizzaProblemToMaxSatProblem {
   private def CellBelongsAtom(cell: Cell): Atom[PizzaAtom] = Atom(CellBelongs(cell.x, cell.y))
 
   def apply(implicit data: PizzaProblemData): MaxSatProblem[PizzaAtom] = {
-    logger.info("Computing 'Cell chosen' definition")
     val cc = cellChosenDefinition
-    logger.info("Computing 'non-Overlapping' definition")
     val no = nonOverlappingDefinition
 
     val problemFormulas = cc.concat(no)
+    val hardClauses = problemFormulas.flatMapMerge(4, f => toClauses(f)).async
 
-    logger.info("Computing clause form")
-    val hardClauses = problemFormulas.flatMapConcat(f => toClauses(f))
-
-    logger.info("Computing 'Cell belongs' clauses")
     val cellClauses: Set[Clause[PizzaAtom]] = data.allCells.map(cell =>
       PizzaClause(Set(), Set(CellBelongsAtom(cell)))).toSet
 
@@ -49,16 +41,16 @@ object pizzaProblemToMaxSatProblem {
   }
 
   private def nonOverlappingDefinition(implicit data: PizzaProblemData): Source[Formula[PizzaAtom], NotUsed] =
-    Source(data.allSlices).flatMapConcat(slice1 => Source(computeOverlappingSlices(slice1))
+    Source(data.allSlices).flatMapMerge(4, slice1 => Source(computeOverlappingSlices(slice1)).async
       .map(slice2 => Or(Seq(Not(SliceChosenAtom(slice1)), Not(SliceChosenAtom(slice2))))))
 
-
-  // TODO: Maybe possible to optimize by using a specialized allSlicesAt
+  // TODO: Maybe possible to optimize by using a specialized allSlicesAt considering minimum
+  // length/width of slice.
   private[pizza] def computeOverlappingSlices(slice: Slice)(implicit data: PizzaProblemData): List[Slice] = {
-    rectangle(slice.upperLeft.x-data.problem.maxCells to slice.upperLeft.x + slice.length,
-      slice.upperLeft.y-data.problem.maxCells to slice.upperLeft.y + slice.height)
-      .flatMap{ case (x,y) => allSlicesAt(x, y)(data.problem)
-      .filter( slice2 => slice2 != slice && doSlicesOverlap(slice2, slice))
+    rectangle(slice.upperLeft.x - data.problem.maxCells to slice.upperLeft.x + slice.length,
+      slice.upperLeft.y - data.problem.maxCells to slice.upperLeft.y + slice.height)
+      .flatMap { case (x, y) => allSlicesAt(x, y)(data.problem)
+        .filter(slice2 => slice2 != slice && doSlicesOverlap(slice2, slice))
       }
       .toList
   }
@@ -67,10 +59,3 @@ object pizzaProblemToMaxSatProblem {
 case class Cell(x: Int, y: Int)
 
 case class Slice(upperLeft: Cell, length: Int, height: Int)
-
-private[pizza] object differentTuples {
-  def apply[T](set: Set[T], length: Int): Set[Set[T]] = {
-    if (length == 0) Set(Set()) else
-      set.flatMap(x => apply(set - x, length - 1).map(tuple => tuple + x))
-  }
-}
