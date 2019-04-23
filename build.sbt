@@ -12,10 +12,9 @@ libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3"
 
 libraryDependencies += "commons-io" % "commons-io" % "2.6"
 
-
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-stream" % "2.5.21",
   "com.typesafe.akka" %% "akka-stream-testkit" % "2.5.21" % Test
 )
 
-mainClass in (Compile, run) := Some("Main")
+mainClass in(Compile, run) := Some("Main")

@@ -2,7 +2,6 @@ package pizza
 
 import org.slf4j.{Logger, LoggerFactory}
 import util.rectangle
-import util.MapUtils.LoggingParallelMap
 
 object pizzaProblemToData {
   private implicit val logger: Logger = LoggerFactory.getLogger(getClass)
@@ -11,7 +10,7 @@ object pizzaProblemToData {
 
   private[pizza] def allSlices(implicit pp: PizzaProblem): Seq[Slice] = {
     logger.debug("Computing all slices with enough ingredients")
-    val ret = rectangle(0 until pp.columns, 0 until pp.rows).par.flatMapAndLogProgress { case (i, j) =>
+    val ret = rectangle(0 until pp.columns, 0 until pp.rows).par.flatMap { case (i, j) =>
       allSlicesAt(i, j)(pp)
     }.seq
     logger.debug(s"Computed all ${ret.size} valid slices")
