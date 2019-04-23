@@ -1,5 +1,6 @@
 package maxsat
 
+import maxsat.solver.solveWithSat4J
 import org.scalatest.{FlatSpec, Matchers}
 
 class solveWithSat4JTest extends FlatSpec with Matchers {

@@ -1,7 +1,8 @@
-package maxsat
+package maxsat.solver
 
 import java.io.{File, FileInputStream}
 
+import maxsat.{MaxSatProblem, MaxSatSolution, maxSatProblemToDimacs}
 import org.sat4j.maxsat.reader.WDimacsReader
 import org.sat4j.maxsat.{SolverFactory, WeightedMaxSatDecorator}
 import org.slf4j.{Logger, LoggerFactory}
@@ -23,13 +24,7 @@ object solveWithSat4J {
     val solverProblem = reader.parseInstance(new FileInputStream(file))
     Option(solverProblem.findModel()) match {
       case None => None
-      case Some(model) => val myModel: Map[Atom[T], Boolean] = variableMap.map { case (atom, i) =>
-        if (model.contains(i))
-          atom -> true
-        else
-          atom -> false
-      }
-        Some(MaxSatSolution(myModel, variableMap))
+      case Some(model) => Some(dimacsSolutionToMaxSatSolution(model, variableMap))
     }
   }
 }

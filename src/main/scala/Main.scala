@@ -1,29 +1,39 @@
 import java.io.FileInputStream
 
-import org.slf4j.Logger
-import maxsat.{Atom, MaxSatSolution, solveWithSat4J}
-import org.slf4j.LoggerFactory
+import maxsat.solver.{SolverFunction, solveWithOpenWbo, solveWithSat4J}
+import maxsat.{Atom, MaxSatSolution}
+import org.slf4j.{Logger, LoggerFactory}
 import pizza._
 import pizza.parser.parsePizzaProblem
 
 object Main extends App {
-
-
   override def main(args: Array[String]): Unit = {
+    val Sat4JIdentifier = "sat4j"
+    val OpenWboIdentifier = "openwbo"
+
     val logger = LoggerFactory.getLogger(getClass)
-    if (args.length != 1) {
-      println("USAGE: pizza-maxsat [FILE]")
+    if (args.length != 2) {
+      println(s"USAGE: pizza-maxsat [$Sat4JIdentifier|$OpenWboIdentifier] [FILE]")
       System.exit(1)
     }
 
-    val problem = parsePizzaProblem(scala.io.Source.fromInputStream(new FileInputStream(args(0))).mkString)
+    val solverFunction: SolverFunction[PizzaAtom] = if (args(0) == Sat4JIdentifier)
+      solveWithSat4J.apply
+    else if (args(0) == OpenWboIdentifier)
+      solveWithOpenWbo.apply
+    else {
+      throw new RuntimeException(s"Unknown solver ${args(0)}")
+    }
+
+    val problem = parsePizzaProblem(scala.io.Source.fromInputStream(new FileInputStream(args(1))).mkString)
     logger.info("Precomputing cells and valid slices...")
     val data = pizzaProblemToData(problem)
 
     logger.info("Translating to MaxSAT...")
     val maxSatProblem = pizzaProblemToMaxSatProblem(data)
 
-    solveWithSat4J(maxSatProblem) match {
+
+    solverFunction(maxSatProblem) match {
       case Some(maxSatSolution) =>
         val solution = maxSatSolutionToPizzaSolution(maxSatSolution)
         logger.info("Solution")
@@ -54,8 +64,6 @@ object Main extends App {
         }
       case _ =>
     }
-
-
   }
 
   private def logSliceModelInfo(maxSatSolution: MaxSatSolution[PizzaAtom], slice: Slice, logger: Logger): Unit = {
