@@ -17,4 +17,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-stream-testkit" % "2.5.21" % Test
 )
 
+resolvers += Resolver.bintrayRepo("gapt", "maven")
+libraryDependencies += "at.logic.gapt" %% "gapt" % "2.14"
+
 mainClass in(Compile, run) := Some("Main")
